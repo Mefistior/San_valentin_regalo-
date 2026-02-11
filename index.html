@@ -16,7 +16,7 @@ body{
     min-height:100vh;
 }
 
-.main-card{
+.wrapper{
     width:95%;
     max-width:1200px;
     background:#f2b8c6;
@@ -25,28 +25,40 @@ body{
     box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
-.top{
-    display:flex;
+/* DIAGRAMA EXACTO */
+.layout{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:auto auto;
     gap:20px;
-    flex-wrap:wrap;
 }
 
-.section{
+.text{
+    grid-column:1;
+    grid-row:1;
+}
+
+.tree{
+    grid-column:2;
+    grid-row:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.counter{
+    grid-column:1 / span 2;
+    grid-row:2;
+    text-align:center;
+    font-size:18px;
+    color:#6b2e44;
+}
+
+.card{
     background:#ffe6ed;
     border-radius:20px;
     padding:25px;
     box-shadow:0 8px 20px rgba(0,0,0,0.05);
-}
-
-.left{ flex:1; min-width:280px; }
-.right{ flex:1; min-width:280px; display:flex; justify-content:center; align-items:center; }
-
-.bottom{ margin-top:20px; }
-
-#counter{
-    text-align:center;
-    font-size:18px;
-    color:#6b2e44;
 }
 
 canvas{
@@ -61,30 +73,23 @@ p{ color:#5a2a3b; line-height:1.6; }
     position:fixed;
     bottom:20px;
     right:20px;
-    background:#ffffffcc;
+    background:#ffffffdd;
     border:none;
     padding:12px 18px;
     border-radius:30px;
-    font-size:14px;
     cursor:pointer;
     box-shadow:0 8px 20px rgba(0,0,0,0.15);
-    backdrop-filter:blur(6px);
-    transition:all 0.3s ease;
-}
-
-#musicBtn:hover{
-    transform:scale(1.05);
 }
 </style>
 </head>
 
 <body>
 
-<div class="main-card">
+<div class="wrapper">
 
-<div class="top">
+<div class="layout">
 
-<div class="section left">
+<div class="card text">
 <h1>Para Laura ❤️</h1>
 <p>Eres la persona que llena mi mundo.</p>
 <p>Eres mi felicidad y mi paz.</p>
@@ -92,22 +97,19 @@ p{ color:#5a2a3b; line-height:1.6; }
 <p>Y cada día contigo es un regalo maravilloso.</p>
 </div>
 
-<div class="section right">
+<div class="card tree">
 <canvas id="treeCanvas"></canvas>
 </div>
 
-</div>
+<div class="card counter" id="counter"></div>
 
-<div class="section bottom">
-<div id="counter"></div>
 </div>
-
 </div>
 
 <button id="musicBtn">🎵 Nuestra canción</button>
 
 <audio id="bgMusic" loop>
-<source src="https://dl.sndup.net/3c8r/Los%20Retros%20-%20Someone%20To%20Spend%20Time%20With.mp3" type="audio/mpeg">
+<source src="cancion.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -116,18 +118,18 @@ const ctx = canvas.getContext("2d");
 canvas.width = canvas.offsetWidth;
 canvas.height = 420;
 
-let branches = [];
-let heartPoints = [];
-let treeFinished = false;
+let branches=[];
+let heartPoints=[];
+let finished=false;
 
-function startTree(){
+function grow(){
     branches.push({
-        x: canvas.width/2,
-        y: canvas.height-10,
+        x:canvas.width/2,
+        y:canvas.height-10,
         length:110,
         angle:-Math.PI/2,
-        width:12,
-        depth:9
+        width:14,
+        depth:10
     });
     animate();
 }
@@ -135,12 +137,11 @@ function startTree(){
 function animate(){
     if(branches.length===0){
         drawHearts();
-        treeFinished = true;
-        startMusicAuto();
+        finished=true;
         return;
     }
 
-    let newBranches=[];
+    let next=[];
 
     branches.forEach(b=>{
         const x2=b.x+b.length*Math.cos(b.angle);
@@ -160,23 +161,24 @@ function animate(){
             const nl=b.length*0.75;
             const nw=b.width*0.7;
 
-            newBranches.push({x:x2,y:y2,length:nl,angle:b.angle-0.6,width:nw,depth:b.depth-1});
-            newBranches.push({x:x2,y:y2,length:nl,angle:b.angle+0.6,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl,angle:b.angle-0.6,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl,angle:b.angle+0.6,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl*0.8,angle:b.angle,width:nw,depth:b.depth-1});
         }
     });
 
-    branches=newBranches;
-    setTimeout(animate,110);
+    branches=next;
+    setTimeout(animate,100);
 }
 
-function drawHeart(x,y,size,color){
-    ctx.fillStyle=color;
+function heart(x,y,s,c){
+    ctx.fillStyle=c;
     ctx.beginPath();
     ctx.moveTo(x,y);
-    ctx.bezierCurveTo(x,y-size/2,x-size/2,y-size/2,x-size/2,y);
-    ctx.bezierCurveTo(x-size/2,y+size/2,x,y+size/2,x,y+size);
-    ctx.bezierCurveTo(x,y+size/2,x+size/2,y+size/2,x+size/2,y);
-    ctx.bezierCurveTo(x+size/2,y-size/2,x,y-size/2,x,y);
+    ctx.bezierCurveTo(x,y-s/2,x-s/2,y-s/2,x-s/2,y);
+    ctx.bezierCurveTo(x-s/2,y+s/2,x,y+s/2,x,y+s);
+    ctx.bezierCurveTo(x,y+s/2,x+s/2,y+s/2,x+s/2,y);
+    ctx.bezierCurveTo(x+s/2,y-s/2,x,y-s/2,x,y);
     ctx.fill();
 }
 
@@ -184,79 +186,51 @@ function drawHearts(){
     const colors=["#f497b6","#e77fa3","#ff8fab","#f6a5b6","#ffc2d1"];
 
     heartPoints.forEach(p=>{
-        if(p.depth<=5 || Math.random()>0.4){
-            const size=6+Math.random()*8;
-            const ox=(Math.random()*20-10);
-            const oy=(Math.random()*20-10);
-            drawHeart(p.x+ox,p.y+oy,size,
+        if(p.depth<=6 || Math.random()>0.3){
+            heart(
+                p.x+(Math.random()*20-10),
+                p.y+(Math.random()*20-10),
+                6+Math.random()*8,
                 colors[Math.floor(Math.random()*colors.length)]
             );
         }
     });
 }
 
-startTree();
+grow();
 
 /* CONTADOR */
-const startDate=new Date("2023-08-20T00:00:00");
+const start=new Date("2023-08-20");
 
-function updateCounter(){
+function update(){
     const now=new Date();
-    let years=now.getFullYear()-startDate.getFullYear();
-    let months=now.getMonth()-startDate.getMonth();
-    let days=now.getDate()-startDate.getDate();
+    let y=now.getFullYear()-start.getFullYear();
+    let m=now.getMonth()-start.getMonth();
+    let d=now.getDate()-start.getDate();
 
-    if(days<0){
-        months--;
-        days+=new Date(now.getFullYear(),now.getMonth(),0).getDate();
-    }
-    if(months<0){
-        years--;
-        months+=12;
-    }
+    if(d<0){ m--; d+=new Date(now.getFullYear(),now.getMonth(),0).getDate();}
+    if(m<0){ y--; m+=12;}
 
     document.getElementById("counter").innerHTML=
     `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
-    Han pasado ${years} años, ${months} meses y ${days} días juntos`;
+    Han pasado ${y} años, ${m} meses y ${d} días juntos`;
 }
-
-updateCounter();
-setInterval(updateCounter,86400000);
+update();
+setInterval(update,86400000);
 
 /* MÚSICA */
-const music = document.getElementById("bgMusic");
-const btn = document.getElementById("musicBtn");
-
-function startMusicAuto(){
-    music.volume = 0;
-    music.play().then(()=>{
-        fadeIn();
-        btn.innerText="💗 Pausar canción";
-    }).catch(()=>{});
-}
+const music=document.getElementById("bgMusic");
+const btn=document.getElementById("musicBtn");
 
 btn.addEventListener("click",()=>{
     if(music.paused){
         music.play();
-        fadeIn();
-        btn.innerText="💗 Pausar canción";
+        btn.innerText="💗 Pausar";
     }else{
         music.pause();
         btn.innerText="🎵 Nuestra canción";
     }
 });
-
-function fadeIn(){
-    let vol=0;
-    const interval=setInterval(()=>{
-        if(vol<1){
-            vol+=0.05;
-            music.volume=vol;
-        }else{
-            clearInterval(interval);
-        }
-    },200);
-}
 </script>
 
 </body>
