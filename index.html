@@ -3,213 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para Laura ❤️</title>
+<title>Regalo de San Valentín</title>
 
 <style>
 body{
     margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background:linear-gradient(135deg,#f6cdd8,#f2b8c9);
+    font-family: 'Georgia', serif;
+    background: linear-gradient(to bottom,#e9b7c5,#dba3b4);
     display:flex;
     justify-content:center;
     align-items:center;
     min-height:100vh;
 }
 
-/* CONTENEDOR GENERAL */
 .container{
-    width:95%;
-    max-width:900px;
-}
-
-/* TARJETA PRINCIPAL */
-.card{
-    background:#f9e4ec;
+    width:90%;
+    max-width:1000px;
+    background:#e4c2cc;
+    padding:40px;
     border-radius:25px;
-    padding:25px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
 }
 
-/* ZONA SUPERIOR */
 .top{
     display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:25px;
+    gap:30px;
 }
 
-/* LETRAS */
-.texto{
-    width:50%;
-    background:#ffffffcc;
-    padding:20px;
-    border-radius:20px;
+.card{
+    flex:1;
+    background:#f4e7ec;
+    padding:35px;
+    border-radius:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
-.texto h1{
-    color:#7a2c45;
+h1{
     margin-top:0;
+    color:#7b2e46;
 }
 
-.texto p{
-    color:#6b2d44;
+p{
+    color:#6a3a4a;
+    font-size:18px;
     line-height:1.6;
 }
 
-/* ÁRBOL */
-.arbol{
-    width:50%;
-    background:#ffffffcc;
-    border-radius:20px;
+.tree-card{
     display:flex;
     justify-content:center;
     align-items:center;
-    cursor:pointer;
-    overflow:hidden;
 }
 
-svg{
+canvas{
     width:100%;
     height:420px;
 }
 
-/* CONTADOR */
-.contador{
-    margin-top:20px;
-    background:#ffffffcc;
-    padding:15px;
+.counter{
+    margin-top:30px;
+    background:#f4e7ec;
+    padding:20px;
     border-radius:20px;
     text-align:center;
-    color:#7a2c45;
+    color:#7b2e46;
+    font-size:18px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
-/* BOTÓN MÚSICA */
 .music{
-    margin-top:10px;
+    margin-top:25px;
     text-align:center;
 }
 
-button{
-    background:#d86c8b;
-    color:white;
+.music button{
+    padding:12px 28px;
     border:none;
-    padding:10px 18px;
-    border-radius:20px;
+    border-radius:30px;
+    background:#c86586;
+    color:white;
+    font-size:16px;
     cursor:pointer;
+    transition:0.3s;
+}
+
+.music button:hover{
+    background:#b75474;
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
-<div class="card">
 
-<div class="top">
+    <div class="top">
 
-<div class="texto">
-<h1>Para Laura ❤️</h1>
-<p>Eres la persona que llena mi mundo.</p>
-<p>Eres mi felicidad y mi paz.</p>
-<p>Eres el amor que encontré sin buscar.</p>
-<p>Y cada día contigo es un regalo maravilloso.</p>
-</div>
+        <div class="card">
+            <h1>Para Laura ❤️</h1>
+            <p>Eres la persona que llena mi mundo.</p>
+            <p>Eres mi felicidad y mi paz.</p>
+            <p>Eres el amor que encontré sin buscar.</p>
+            <p>Y cada día contigo es un regalo maravilloso.</p>
+        </div>
 
-<div class="arbol" onclick="iniciar()">
-<svg viewBox="0 0 400 500" id="treeSVG">
+        <div class="card tree-card">
+            <canvas id="treeCanvas"></canvas>
+        </div>
 
-<!-- TRONCO -->
-<line x1="200" y1="500" x2="200" y2="350" stroke="#6b3e26" stroke-width="14"/>
+    </div>
 
-<!-- RAMAS -->
-<line x1="200" y1="380" x2="120" y2="300" stroke="#6b3e26" stroke-width="8"/>
-<line x1="200" y1="380" x2="280" y2="300" stroke="#6b3e26" stroke-width="8"/>
-<line x1="200" y1="330" x2="150" y2="250" stroke="#6b3e26" stroke-width="7"/>
-<line x1="200" y1="330" x2="250" y2="250" stroke="#6b3e26" stroke-width="7"/>
-<line x1="200" y1="300" x2="200" y2="220" stroke="#6b3e26" stroke-width="7"/>
+    <div class="counter" id="counter"></div>
 
-<!-- CORAZONES -->
-<g id="hearts"></g>
+    <div class="music">
+        <button id="playBtn">🎵 Nuestra canción</button>
+        <audio id="music" src="cancion.mp3"></audio>
+    </div>
 
-</svg>
-</div>
-
-</div>
-
-<div class="contador" id="contador"></div>
-
-<div class="music">
-<button onclick="playMusic()">🎵 Nuestra canción</button>
-<audio id="audio" src="canción.mp3.mp3"></audio>
-</div>
-
-</div>
 </div>
 
 <script>
+const canvas = document.getElementById("treeCanvas");
+const ctx = canvas.getContext("2d");
 
-let iniciado=false;
+function resizeCanvas(){
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-function iniciar(){
-    if(iniciado) return;
-    iniciado=true;
+let animationStarted = false;
 
-    const hearts = document.getElementById("hearts");
+function drawBranch(x,y,length,angle,depth){
+    if(depth===0) return;
 
-    const colores = ["#ff6b9a","#ff8fab","#ff4d6d","#ff99ac","#ff85a2"];
+    const x2 = x + length*Math.cos(angle);
+    const y2 = y + length*Math.sin(angle);
 
-    for(let i=0;i<40;i++){
-        let x = 80 + Math.random()*240;
-        let y = 80 + Math.random()*250;
+    ctx.beginPath();
+    ctx.moveTo(x,y);
+    ctx.lineTo(x2,y2);
+    ctx.strokeStyle="#6b3e26";
+    ctx.lineWidth = depth+1;
+    ctx.stroke();
 
-        let heart = document.createElementNS("http://www.w3.org/2000/svg","text");
-        heart.setAttribute("x",x);
-        heart.setAttribute("y",y);
-        heart.setAttribute("font-size","20");
-        heart.setAttribute("fill",colores[Math.floor(Math.random()*colores.length)]);
-        heart.textContent="❤";
+    drawBranch(x2,y2,length*0.75,angle-0.4,depth-1);
+    drawBranch(x2,y2,length*0.75,angle+0.4,depth-1);
+}
 
-        heart.style.opacity="0";
-        hearts.appendChild(heart);
+function drawHeart(x,y,size,color){
+    ctx.beginPath();
+    ctx.moveTo(x,y);
+    ctx.bezierCurveTo(x,y-size/2,x-size/2,y-size/2,x-size/2,y);
+    ctx.bezierCurveTo(x-size/2,y+size/2,x,y+size/2,x,y+size);
+    ctx.bezierCurveTo(x,y+size/2,x+size/2,y+size/2,x+size/2,y);
+    ctx.bezierCurveTo(x+size/2,y-size/2,x,y-size/2,x,y);
+    ctx.fillStyle=color;
+    ctx.fill();
+}
 
-        setTimeout(()=>{
-            heart.style.transition="opacity 1s";
-            heart.style.opacity="1";
-        }, i*80);
+function animateTree(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    drawBranch(canvas.width/2,canvas.height,120,-Math.PI/2,7);
+
+    const colors=["#ff6f91","#ff8fab","#ff4d6d","#f78fb3"];
+    for(let i=0;i<120;i++){
+        const x = canvas.width/2 + (Math.random()-0.5)*220;
+        const y = canvas.height/2 + (Math.random()-0.5)*180;
+        drawHeart(x,y,10,colors[Math.floor(Math.random()*colors.length)]);
     }
 }
 
-/* CONTADOR COMPLETO */
-const inicio = new Date("2023-08-20");
+canvas.addEventListener("click",()=>{
+    if(!animationStarted){
+        animationStarted=true;
+        animateTree();
+    }
+});
 
-function actualizar(){
-    const ahora = new Date();
+// Contador exacto
+const startDate = new Date("2023-08-20");
 
-    let años = ahora.getFullYear() - inicio.getFullYear();
-    let meses = ahora.getMonth() - inicio.getMonth();
-    let dias = ahora.getDate() - inicio.getDate();
+function updateCounter(){
+    const now = new Date();
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
 
-    if(dias < 0){
-        meses--;
-        dias += 30;
+    if(days<0){
+        months--;
+        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+        days += prevMonth;
     }
 
-    if(meses < 0){
-        años--;
-        meses += 12;
+    if(months<0){
+        years--;
+        months+=12;
     }
 
-    document.getElementById("contador").innerHTML =
+    document.getElementById("counter").innerHTML =
     `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
-     Han pasado ${años} años, ${meses} meses y ${dias} días juntos`;
+    Han pasado ${years} años, ${months} meses y ${days} días juntos`;
 }
+updateCounter();
+setInterval(updateCounter,1000);
 
-setInterval(actualizar,1000);
-actualizar();
-
-/* MÚSICA */
-function playMusic(){
-    document.getElementById("audio").play();
-}
+// Música
+const audio = document.getElementById("music");
+document.getElementById("playBtn").addEventListener("click",()=>{
+    audio.play();
+});
 </script>
 
 </body>
