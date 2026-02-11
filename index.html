@@ -17,29 +17,35 @@ body{
 }
 
 .wrapper{
-    width:95%;
+    width:98%;
     max-width:1200px;
     background:#f2b8c6;
     border-radius:25px;
-    padding:25px;
+    padding:15px;
     box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
+/* DIAGRAMA RESPETADO */
 .layout{
     display:grid;
-    grid-template-columns:1fr 1.2fr;
+    grid-template-columns:0.9fr 1.3fr; /* árbol más ancho */
     grid-template-rows:auto auto;
-    gap:20px;
+    gap:15px;
 }
 
-.text{ grid-column:1; grid-row:1; }
-.tree{ 
-    grid-column:2; 
+.text{
+    grid-column:1;
+    grid-row:1;
+}
+
+.tree{
+    grid-column:2;
     grid-row:1;
     display:flex;
     justify-content:center;
     align-items:center;
 }
+
 .counter{
     grid-column:1 / span 2;
     grid-row:2;
@@ -51,17 +57,17 @@ body{
 .card{
     background:#ffe6ed;
     border-radius:20px;
-    padding:25px;
+    padding:20px;
     box-shadow:0 8px 20px rgba(0,0,0,0.05);
 }
 
 canvas{
     width:100%;
-    height:450px;
+    height:430px;
 }
 
-h1{ color:#7a2e45; }
-p{ color:#5a2a3b; line-height:1.6; }
+h1{ color:#7a2e45; font-size:20px; }
+p{ color:#5a2a3b; line-height:1.5; font-size:14px; }
 
 #musicBtn{
     position:fixed;
@@ -80,6 +86,7 @@ p{ color:#5a2a3b; line-height:1.6; }
 <body>
 
 <div class="wrapper">
+
 <div class="layout">
 
 <div class="card text">
@@ -109,7 +116,7 @@ p{ color:#5a2a3b; line-height:1.6; }
 const canvas = document.getElementById("treeCanvas");
 const ctx = canvas.getContext("2d");
 canvas.width = canvas.offsetWidth;
-canvas.height = 450;
+canvas.height = 430;
 
 let branches=[];
 let heartPoints=[];
@@ -117,11 +124,11 @@ let heartPoints=[];
 function grow(){
     branches.push({
         x:canvas.width/2,
-        y:canvas.height-20,
-        length:90,
+        y:canvas.height-10,
+        length:95,
         angle:-Math.PI/2,
-        width:16,
-        depth:8
+        width:14,
+        depth:7 /* menos ramas */
     });
     animate();
 }
@@ -139,7 +146,7 @@ function animate(){
         const y2=b.y+b.length*Math.sin(b.angle);
 
         ctx.beginPath();
-        ctx.strokeStyle="#6e3b20";
+        ctx.strokeStyle="#7b4b2a";
         ctx.lineWidth=b.width;
         ctx.lineCap="round";
         ctx.moveTo(b.x,b.y);
@@ -149,18 +156,16 @@ function animate(){
         heartPoints.push({x:x2,y:y2,depth:b.depth});
 
         if(b.depth>0){
-            const nl=b.length*0.8;
-            const nw=b.width*0.75;
+            const nl=b.length*0.75;
+            const nw=b.width*0.7;
 
-            next.push({x:x2,y:y2,length:nl,angle:b.angle-0.7,width:nw,depth:b.depth-1});
-            next.push({x:x2,y:y2,length:nl,angle:b.angle+0.7,width:nw,depth:b.depth-1});
-            next.push({x:x2,y:y2,length:nl*0.85,angle:b.angle-0.3,width:nw,depth:b.depth-1});
-            next.push({x:x2,y:y2,length:nl*0.85,angle:b.angle+0.3,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl,angle:b.angle-0.6,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl,angle:b.angle+0.6,width:nw,depth:b.depth-1});
         }
     });
 
     branches=next;
-    setTimeout(animate,80);
+    setTimeout(animate,100);
 }
 
 function heart(x,y,s,c){
@@ -178,11 +183,12 @@ function drawHearts(){
     const colors=["#f497b6","#e77fa3","#ff8fab","#f6a5b6","#ffc2d1"];
 
     heartPoints.forEach(p=>{
-        if(p.depth<=6 || Math.random()>0.2){
+        /* corazones también en zona media */
+        if(p.depth<=5 || Math.random()>0.2){
             heart(
-                p.x+(Math.random()*30-15),
-                p.y+(Math.random()*30-15),
-                8+Math.random()*6,
+                p.x+(Math.random()*25-12),
+                p.y+(Math.random()*25-12),
+                8+Math.random()*8,
                 colors[Math.floor(Math.random()*colors.length)]
             );
         }
