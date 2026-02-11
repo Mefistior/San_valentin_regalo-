@@ -9,157 +9,157 @@
 body{
     margin:0;
     font-family: 'Georgia', serif;
-    background: linear-gradient(135deg,#e7b8c2,#dba6b3);
+    background: linear-gradient(180deg,#e8c1cc,#d8a7b4);
     display:flex;
     justify-content:center;
-    align-items:center;
-    min-height:100vh;
+    padding:40px 15px;
 }
 
-/* CONTENEDOR PRINCIPAL ENSANCHADO */
 .contenedor{
-    max-width:1200px;   /* ← SOLO ESTO SE AGRANDÓ */
-    width:95%;
-    margin:auto;
-    padding:40px;
-    background:#e6c8cf;
+    background:#e6c4cf;
+    max-width:900px;
+    width:100%;
     border-radius:30px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.15);
+    padding:40px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
 }
 
-/* FILA FLEX */
-.fila{
+.contenido{
     display:flex;
-    gap:40px; /* ← MÁS ESPACIO ENTRE CARTA Y ÁRBOL */
+    gap:50px;
 }
 
-/* COLUMNA IZQUIERDA */
-.carta{
-    flex:1;
-    background:#f2e5e9;
-    padding:40px;
-    border-radius:30px;
+.carta, .arbol-box{
+    background:#f4e9ed;
+    width:48%;
+    border-radius:25px;
+    padding:35px;
 }
 
 .carta h1{
-    margin-top:0;
-    font-size:48px;
-    color:#7a2e44;
+    font-size:42px;
+    margin:0;
+    color:#7a2d44;
 }
 
 .carta p{
-    font-size:22px;
-    color:#6b2d3d;
-    line-height:1.6;
-    max-width:480px; /* evita que el texto se vea exagerado */
+    font-size:20px;
+    color:#6a2f3f;
+    line-height:1.5;
 }
 
-/* COLUMNA DERECHA */
-.arbol-container{
-    flex:1;
-    background:#f2e5e9;
-    border-radius:30px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    position:relative;
-}
-
-/* ÁRBOL */
 .arbol{
     position:relative;
-    width:200px;
-    height:300px;
+    height:420px;
 }
 
 .tronco{
+    width:20px;
+    height:200px;
+    background:#5a2d1b;
     position:absolute;
     bottom:0;
     left:50%;
     transform:translateX(-50%);
-    width:14px;
-    height:150px;
-    background:#5a2d1a;
+    border-radius:10px;
 }
 
 .rama{
+    width:140px;
+    height:12px;
+    background:#5a2d1b;
     position:absolute;
-    width:80px;
-    height:8px;
-    background:#5a2d1a;
+    top:140px;
+    left:50%;
+    transform-origin:left center;
+    border-radius:10px;
 }
 
-.rama1{
-    bottom:120px;
-    left:50%;
-    transform:translateX(-50%) rotate(-30deg);
-}
-
-.rama2{
-    bottom:120px;
-    left:50%;
-    transform:translateX(-50%) rotate(30deg);
-}
+.r1{ transform:rotate(40deg); }
+.r2{ transform:rotate(-40deg); }
+.r3{ top:100px; transform:rotate(25deg); }
+.r4{ top:100px; transform:rotate(-25deg); }
 
 .corazon{
+    width:18px;
+    height:18px;
+    background:#f3a6b8;
     position:absolute;
-    width:16px;
-    height:16px;
-    background:pink;
     transform:rotate(45deg);
-    animation:flotar 3s infinite ease-in-out;
+    animation:flotar 4s infinite ease-in-out;
 }
 
-.corazon::before,
-.corazon::after{
-    content:'';
+.corazon:before,
+.corazon:after{
+    content:"";
+    width:18px;
+    height:18px;
+    background:#f3a6b8;
     position:absolute;
-    width:16px;
-    height:16px;
-    background:pink;
     border-radius:50%;
 }
 
-.corazon::before{
-    top:-8px;
-    left:0;
-}
+.corazon:before{ top:-9px; left:0; }
+.corazon:after{ left:-9px; top:0; }
 
-.corazon::after{
-    left:-8px;
-    top:0;
-}
+/* Distribución frondosa */
+.c1{top:40px; left:35%;}
+.c2{top:60px; left:55%;}
+.c3{top:80px; left:30%;}
+.c4{top:100px; left:65%;}
+.c5{top:120px; left:40%;}
+.c6{top:70px; left:50%;}
+.c7{top:50px; left:70%;}
+.c8{top:90px; left:45%;}
+.c9{top:110px; left:55%;}
+.c10{top:130px; left:35%;}
+.c11{top:85px; left:60%;}
+.c12{top:60px; left:40%;}
 
 @keyframes flotar{
-    0%{transform:translateY(0) rotate(45deg);}
-    50%{transform:translateY(-10px) rotate(45deg);}
-    100%{transform:translateY(0) rotate(45deg);}
+    0%{transform:rotate(45deg) translateY(0);}
+    50%{transform:rotate(45deg) translateY(-8px);}
+    100%{transform:rotate(45deg) translateY(0);}
 }
 
-/* CONTADOR */
-.contador{
-    margin-top:30px;
-    background:#f2e5e9;
+.contador-box{
+    background:#f4e9ed;
+    margin-top:40px;
+    border-radius:25px;
     padding:25px;
-    border-radius:20px;
     text-align:center;
-    font-size:22px;
-    color:#6b2d3d;
+    font-size:20px;
+    color:#6a2f3f;
 }
 
-/* BOTÓN */
+.boton{
+    margin-top:25px;
+    display:flex;
+    justify-content:center;
+}
+
 button{
-    margin-top:30px;
-    display:block;
-    margin-left:auto;
-    margin-right:auto;
-    padding:15px 40px;
-    font-size:20px;
+    background:#c45c7a;
     border:none;
-    border-radius:40px;
-    background:#c45b7c;
+    padding:15px 35px;
+    border-radius:30px;
+    font-size:18px;
     color:white;
     cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#a94a65;
+}
+
+@media(max-width:800px){
+    .contenido{
+        flex-direction:column;
+    }
+    .carta,.arbol-box{
+        width:100%;
+    }
 }
 </style>
 </head>
@@ -168,62 +168,79 @@ button{
 
 <div class="contenedor">
 
-    <div class="fila">
+<div class="contenido">
 
-        <div class="carta">
-            <h1>Para Laura ❤️</h1>
+<div class="carta">
+<h1>Para Laura ❤️</h1>
+<br>
+<p>Eres la persona que llena mi mundo.</p>
+<p>Eres mi felicidad y mi paz.</p>
+<p>Eres el amor que encontré sin buscar.</p>
+<p>Y cada día contigo es un regalo maravilloso.</p>
+</div>
 
-            <p>
-            Eres la persona que llena mi mundo.<br><br>
-            Eres mi felicidad y mi paz.<br><br>
-            Eres el amor que encontré sin buscar.<br><br>
-            Y cada día contigo es un regalo maravilloso.
-            </p>
-        </div>
+<div class="arbol-box">
+<div class="arbol">
+<div class="tronco"></div>
+<div class="rama r1"></div>
+<div class="rama r2"></div>
+<div class="rama r3"></div>
+<div class="rama r4"></div>
 
-        <div class="arbol-container">
-            <div class="arbol">
-                <div class="tronco"></div>
-                <div class="rama rama1"></div>
-                <div class="rama rama2"></div>
+<div class="corazon c1"></div>
+<div class="corazon c2"></div>
+<div class="corazon c3"></div>
+<div class="corazon c4"></div>
+<div class="corazon c5"></div>
+<div class="corazon c6"></div>
+<div class="corazon c7"></div>
+<div class="corazon c8"></div>
+<div class="corazon c9"></div>
+<div class="corazon c10"></div>
+<div class="corazon c11"></div>
+<div class="corazon c12"></div>
+</div>
+</div>
 
-                <div class="corazon" style="top:60px; left:40px;"></div>
-                <div class="corazon" style="top:80px; left:90px;"></div>
-                <div class="corazon" style="top:50px; left:120px;"></div>
-                <div class="corazon" style="top:100px; left:70px;"></div>
-                <div class="corazon" style="top:70px; left:140px;"></div>
-            </div>
-        </div>
+</div>
 
-    </div>
+<div class="contador-box" id="contador"></div>
 
-    <div class="contador" id="contador"></div>
+<div class="boton">
+<button onclick="reproducir()">🎵 Nuestra canción</button>
+</div>
 
-    <button onclick="reproducir()">🎵 Nuestra canción</button>
-
-    <audio id="audio" src="cancion.mp3"></audio>
+<audio id="musica" src="cancion.mp3"></audio>
 
 </div>
 
 <script>
-const inicio = new Date("2023-08-20");
-
 function actualizarContador(){
+    const inicio = new Date("2023-08-20");
     const hoy = new Date();
-    const diff = hoy - inicio;
 
-    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+    let años = hoy.getFullYear() - inicio.getFullYear();
+    let meses = hoy.getMonth() - inicio.getMonth();
+    let dias = hoy.getDate() - inicio.getDate();
+
+    if(dias < 0){
+        meses--;
+        dias += new Date(hoy.getFullYear(), hoy.getMonth(), 0).getDate();
+    }
+    if(meses < 0){
+        años--;
+        meses += 12;
+    }
 
     document.getElementById("contador").innerHTML =
-    "Mi amor por ti comenzó el 20/08/2023 ❤️<br>Han pasado " +
-    dias + " días juntos";
+        `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
+         Han pasado ${años} años, ${meses} meses y ${dias} días juntos`;
 }
 
 actualizarContador();
 
 function reproducir(){
-    const audio = document.getElementById("audio");
-    audio.play();
+    document.getElementById("musica").play();
 }
 </script>
 
