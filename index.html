@@ -7,230 +7,182 @@
 
 <style>
 body{
-    margin:0;
-    font-family:'Segoe UI',sans-serif;
-    background:#f6d6df;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background:#f4cdd6;
+  display:flex;
+  justify-content:center;
 }
 
-.wrapper{
-    width:95%;
-    max-width:1200px;
-    background:#f2b8c6;
-    border-radius:25px;
-    padding:25px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+.contenedor{
+  width:95%;
+  max-width:900px;
+  background:#e8b9c3;
+  margin:20px;
+  padding:20px;
+  border-radius:30px;
 }
 
-/* DIAGRAMA EXACTO */
-.layout{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    grid-template-rows:auto auto;
-    gap:20px;
-}
-
-.text{
-    grid-column:1;
-    grid-row:1;
-}
-
-.tree{
-    grid-column:2;
-    grid-row:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.counter{
-    grid-column:1 / span 2;
-    grid-row:2;
-    text-align:center;
-    font-size:18px;
-    color:#6b2e44;
+.fila{
+  display:flex;
+  gap:20px;
 }
 
 .card{
-    background:#ffe6ed;
-    border-radius:20px;
-    padding:25px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.05);
+  background:#f6dde3;
+  border-radius:25px;
+  padding:20px;
+  flex:1;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
 }
 
-canvas{
-    width:100%;
-    height:420px;
+h1{
+  color:#7a2e3a;
 }
 
-h1{ color:#7a2e45; }
-p{ color:#5a2a3b; line-height:1.6; }
+p{
+  color:#5a3a40;
+}
 
-#musicBtn{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:#ffffffdd;
-    border:none;
-    padding:12px 18px;
-    border-radius:30px;
-    cursor:pointer;
-    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+.contador-card{
+  margin-top:20px;
+  background:#f6dde3;
+  border-radius:25px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+button{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:#d88fa0;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#c47a8c;
+}
+
+/* Árbol */
+.arbol{
+  display:none;
+  margin-top:10px;
+  position:relative;
+  height:250px;
+}
+
+.tronco{
+  width:15px;
+  height:120px;
+  background:#6d3b24;
+  margin:0 auto;
+  border-radius:10px;
+}
+
+.rama{
+  position:absolute;
+  width:80px;
+  height:10px;
+  background:#6d3b24;
+  border-radius:10px;
+}
+
+.r1{ top:60px; left:30px; transform:rotate(-30deg);}
+.r2{ top:60px; right:30px; transform:rotate(30deg);}
+.r3{ top:100px; left:40px; transform:rotate(-20deg);}
+.r4{ top:100px; right:40px; transform:rotate(20deg);}
+
+.corazon{
+  position:absolute;
+  font-size:16px;
+  animation:flotar 3s infinite ease-in-out;
+}
+
+@keyframes flotar{
+  0%{ transform:translateY(0);}
+  50%{ transform:translateY(-8px);}
+  100%{ transform:translateY(0);}
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">
+<div class="contenedor">
 
-<div class="layout">
+  <div class="fila">
 
-<div class="card text">
-<h1>Para Laura ❤️</h1>
-<p>Eres la persona que llena mi mundo.</p>
-<p>Eres mi felicidad y mi paz.</p>
-<p>Eres el amor que encontré sin buscar.</p>
-<p>Y cada día contigo es un regalo maravilloso.</p>
+    <!-- LETRAS -->
+    <div class="card">
+      <h1>Para Laura ❤️</h1>
+      <p>Eres la persona que llena mi mundo.</p>
+      <p>Eres mi felicidad y mi paz.</p>
+      <p>Eres el amor que encontré sin buscar.</p>
+      <p>Y cada día contigo es un regalo maravilloso.</p>
+    </div>
+
+    <!-- ARBOL -->
+    <div class="card" style="text-align:center;">
+      <button onclick="mostrarArbol()">Presiona aquí 🌳</button>
+
+      <div class="arbol" id="arbol">
+        <div class="tronco"></div>
+        <div class="rama r1"></div>
+        <div class="rama r2"></div>
+        <div class="rama r3"></div>
+        <div class="rama r4"></div>
+
+        <!-- corazones arriba y en medio -->
+        <div class="corazon" style="top:20px; left:45%;">💗</div>
+        <div class="corazon" style="top:30px; left:30%;">💖</div>
+        <div class="corazon" style="top:30px; right:30%;">💘</div>
+        <div class="corazon" style="top:80px; left:35%;">💝</div>
+        <div class="corazon" style="top:90px; right:35%;">💓</div>
+        <div class="corazon" style="top:120px; left:48%;">💗</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CONTADOR -->
+  <div class="contador-card">
+    <p>Mi amor por ti comenzó el 20/08/2023 ❤️</p>
+    <p id="tiempo"></p>
+    <button onclick="iniciarMusica()">🎵 Nuestra canción</button>
+  </div>
+
 </div>
 
-<div class="card tree">
-<canvas id="treeCanvas"></canvas>
-</div>
-
-<div class="card counter" id="counter"></div>
-
-</div>
-</div>
-
-<button id="musicBtn">🎵 Nuestra canción</button>
-
-<audio id="bgMusic" loop>
-<source src="cancion.mp3" type="audio/mpeg">
-</audio>
+<audio id="musica" src="cancion.mp3"></audio>
 
 <script>
-const canvas = document.getElementById("treeCanvas");
-const ctx = canvas.getContext("2d");
-canvas.width = canvas.offsetWidth;
-canvas.height = 420;
-
-let branches=[];
-let heartPoints=[];
-let finished=false;
-
-function grow(){
-    branches.push({
-        x:canvas.width/2,
-        y:canvas.height-10,
-        length:110,
-        angle:-Math.PI/2,
-        width:14,
-        depth:10
-    });
-    animate();
+function mostrarArbol(){
+  document.getElementById("arbol").style.display="block";
+  iniciarMusica();
 }
 
-function animate(){
-    if(branches.length===0){
-        drawHearts();
-        finished=true;
-        return;
-    }
-
-    let next=[];
-
-    branches.forEach(b=>{
-        const x2=b.x+b.length*Math.cos(b.angle);
-        const y2=b.y+b.length*Math.sin(b.angle);
-
-        ctx.beginPath();
-        ctx.strokeStyle="#7b4b2a";
-        ctx.lineWidth=b.width;
-        ctx.lineCap="round";
-        ctx.moveTo(b.x,b.y);
-        ctx.lineTo(x2,y2);
-        ctx.stroke();
-
-        heartPoints.push({x:x2,y:y2,depth:b.depth});
-
-        if(b.depth>0){
-            const nl=b.length*0.75;
-            const nw=b.width*0.7;
-
-            next.push({x:x2,y:y2,length:nl,angle:b.angle-0.6,width:nw,depth:b.depth-1});
-            next.push({x:x2,y:y2,length:nl,angle:b.angle+0.6,width:nw,depth:b.depth-1});
-            next.push({x:x2,y:y2,length:nl*0.8,angle:b.angle,width:nw,depth:b.depth-1});
-        }
-    });
-
-    branches=next;
-    setTimeout(animate,100);
+function iniciarMusica(){
+  const audio = document.getElementById("musica");
+  audio.play();
 }
 
-function heart(x,y,s,c){
-    ctx.fillStyle=c;
-    ctx.beginPath();
-    ctx.moveTo(x,y);
-    ctx.bezierCurveTo(x,y-s/2,x-s/2,y-s/2,x-s/2,y);
-    ctx.bezierCurveTo(x-s/2,y+s/2,x,y+s/2,x,y+s);
-    ctx.bezierCurveTo(x,y+s/2,x+s/2,y+s/2,x+s/2,y);
-    ctx.bezierCurveTo(x+s/2,y-s/2,x,y-s/2,x,y);
-    ctx.fill();
+function actualizarContador(){
+  const inicio = new Date("2023-08-20");
+  const hoy = new Date();
+
+  const diferencia = hoy - inicio;
+  const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+
+  document.getElementById("tiempo").innerText =
+    "Han pasado " + dias + " días juntos 💕";
 }
 
-function drawHearts(){
-    const colors=["#f497b6","#e77fa3","#ff8fab","#f6a5b6","#ffc2d1"];
-
-    heartPoints.forEach(p=>{
-        if(p.depth<=6 || Math.random()>0.3){
-            heart(
-                p.x+(Math.random()*20-10),
-                p.y+(Math.random()*20-10),
-                6+Math.random()*8,
-                colors[Math.floor(Math.random()*colors.length)]
-            );
-        }
-    });
-}
-
-grow();
-
-/* CONTADOR */
-const start=new Date("2023-08-20");
-
-function update(){
-    const now=new Date();
-    let y=now.getFullYear()-start.getFullYear();
-    let m=now.getMonth()-start.getMonth();
-    let d=now.getDate()-start.getDate();
-
-    if(d<0){ m--; d+=new Date(now.getFullYear(),now.getMonth(),0).getDate();}
-    if(m<0){ y--; m+=12;}
-
-    document.getElementById("counter").innerHTML=
-    `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
-    Han pasado ${y} años, ${m} meses y ${d} días juntos`;
-}
-update();
-setInterval(update,86400000);
-
-/* MÚSICA */
-const music=document.getElementById("bgMusic");
-const btn=document.getElementById("musicBtn");
-
-btn.addEventListener("click",()=>{
-    if(music.paused){
-        music.play();
-        btn.innerText="💗 Pausar";
-    }else{
-        music.pause();
-        btn.innerText="🎵 Nuestra canción";
-    }
-});
+actualizarContador();
 </script>
 
 </body>
