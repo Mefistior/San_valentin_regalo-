@@ -16,7 +16,7 @@ body{
     min-height:100vh;
 }
 
-.container{
+.main-card{
     width:95%;
     max-width:1200px;
     background:#f2b8c6;
@@ -25,65 +25,66 @@ body{
     box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
-.top-section{
+.top{
     display:flex;
     gap:20px;
     flex-wrap:wrap;
 }
 
-.card{
+.section{
     background:#ffe6ed;
     border-radius:20px;
     padding:25px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.06);
+    box-shadow:0 8px 20px rgba(0,0,0,0.05);
 }
 
-.text-card{
-    flex:1;
-    min-width:280px;
-}
+.left{ flex:1; min-width:280px; }
+.right{ flex:1; min-width:280px; display:flex; justify-content:center; align-items:center; }
 
-.tree-card{
-    flex:1;
-    min-width:280px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+.bottom{ margin-top:20px; }
 
-.bottom-section{
-    margin-top:25px;
-}
-
-.counter-card{
+#counter{
     text-align:center;
     font-size:18px;
     color:#6b2e44;
-}
-
-h1{
-    color:#7a2e45;
-}
-
-p{
-    color:#5a2a3b;
-    line-height:1.6;
 }
 
 canvas{
     width:100%;
     height:420px;
 }
+
+h1{ color:#7a2e45; }
+p{ color:#5a2a3b; line-height:1.6; }
+
+#musicBtn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#ffffffcc;
+    border:none;
+    padding:12px 18px;
+    border-radius:30px;
+    font-size:14px;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+    backdrop-filter:blur(6px);
+    transition:all 0.3s ease;
+}
+
+#musicBtn:hover{
+    transform:scale(1.05);
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="main-card">
 
-<div class="top-section">
+<div class="top">
 
-<div class="card text-card">
+<div class="section left">
 <h1>Para Laura ❤️</h1>
 <p>Eres la persona que llena mi mundo.</p>
 <p>Eres mi felicidad y mi paz.</p>
@@ -91,95 +92,85 @@ canvas{
 <p>Y cada día contigo es un regalo maravilloso.</p>
 </div>
 
-<div class="card tree-card">
+<div class="section right">
 <canvas id="treeCanvas"></canvas>
 </div>
 
 </div>
 
-<div class="bottom-section">
-<div class="card counter-card" id="counter"></div>
+<div class="section bottom">
+<div id="counter"></div>
 </div>
 
 </div>
+
+<button id="musicBtn">🎵 Nuestra canción</button>
+
+<audio id="bgMusic" loop>
+<source src="https://dl.sndup.net/3c8r/Los%20Retros%20-%20Someone%20To%20Spend%20Time%20With.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 const canvas = document.getElementById("treeCanvas");
 const ctx = canvas.getContext("2d");
-
 canvas.width = canvas.offsetWidth;
 canvas.height = 420;
 
 let branches = [];
 let heartPoints = [];
-let started = false;
+let treeFinished = false;
 
 function startTree(){
     branches.push({
         x: canvas.width/2,
-        y: canvas.height - 10,
-        length: 100,
-        angle: -Math.PI/2,
-        width: 12,
-        depth: 8
+        y: canvas.height-10,
+        length:110,
+        angle:-Math.PI/2,
+        width:12,
+        depth:9
     });
     animate();
 }
 
 function animate(){
-    if(branches.length === 0){
+    if(branches.length===0){
         drawHearts();
+        treeFinished = true;
+        startMusicAuto();
         return;
     }
 
-    let newBranches = [];
+    let newBranches=[];
 
-    branches.forEach(b => {
-
-        const x2 = b.x + b.length * Math.cos(b.angle);
-        const y2 = b.y + b.length * Math.sin(b.angle);
+    branches.forEach(b=>{
+        const x2=b.x+b.length*Math.cos(b.angle);
+        const y2=b.y+b.length*Math.sin(b.angle);
 
         ctx.beginPath();
-        ctx.strokeStyle = "#7b4b2a";
-        ctx.lineWidth = b.width;
-        ctx.lineCap = "round";
-        ctx.moveTo(b.x, b.y);
-        ctx.lineTo(x2, y2);
+        ctx.strokeStyle="#7b4b2a";
+        ctx.lineWidth=b.width;
+        ctx.lineCap="round";
+        ctx.moveTo(b.x,b.y);
+        ctx.lineTo(x2,y2);
         ctx.stroke();
 
-        heartPoints.push({x:x2, y:y2, depth:b.depth});
+        heartPoints.push({x:x2,y:y2,depth:b.depth});
 
-        if(b.depth > 0){
-            const newLength = b.length * 0.75;
-            const newWidth = b.width * 0.7;
+        if(b.depth>0){
+            const nl=b.length*0.75;
+            const nw=b.width*0.7;
 
-            newBranches.push({
-                x:x2,
-                y:y2,
-                length:newLength,
-                angle:b.angle - 0.5,
-                width:newWidth,
-                depth:b.depth - 1
-            });
-
-            newBranches.push({
-                x:x2,
-                y:y2,
-                length:newLength,
-                angle:b.angle + 0.5,
-                width:newWidth,
-                depth:b.depth - 1
-            });
+            newBranches.push({x:x2,y:y2,length:nl,angle:b.angle-0.6,width:nw,depth:b.depth-1});
+            newBranches.push({x:x2,y:y2,length:nl,angle:b.angle+0.6,width:nw,depth:b.depth-1});
         }
-
     });
 
-    branches = newBranches;
-    setTimeout(animate, 120);
+    branches=newBranches;
+    setTimeout(animate,110);
 }
 
 function drawHeart(x,y,size,color){
-    ctx.fillStyle = color;
+    ctx.fillStyle=color;
     ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.bezierCurveTo(x,y-size/2,x-size/2,y-size/2,x-size/2,y);
@@ -190,14 +181,14 @@ function drawHeart(x,y,size,color){
 }
 
 function drawHearts(){
-    const colors = ["#f497b6","#e77fa3","#ff8fab","#f6a5b6","#ffc2d1"];
+    const colors=["#f497b6","#e77fa3","#ff8fab","#f6a5b6","#ffc2d1"];
 
     heartPoints.forEach(p=>{
-        if(p.depth <= 4 || Math.random() > 0.6){
-            const size = 6 + Math.random()*6;
-            const offsetX = (Math.random()*14 - 7);
-            const offsetY = (Math.random()*14 - 7);
-            drawHeart(p.x+offsetX, p.y+offsetY, size,
+        if(p.depth<=5 || Math.random()>0.4){
+            const size=6+Math.random()*8;
+            const ox=(Math.random()*20-10);
+            const oy=(Math.random()*20-10);
+            drawHeart(p.x+ox,p.y+oy,size,
                 colors[Math.floor(Math.random()*colors.length)]
             );
         }
@@ -207,32 +198,65 @@ function drawHearts(){
 startTree();
 
 /* CONTADOR */
-const startDate = new Date("2023-08-20T00:00:00");
+const startDate=new Date("2023-08-20T00:00:00");
 
 function updateCounter(){
-    const now = new Date();
+    const now=new Date();
+    let years=now.getFullYear()-startDate.getFullYear();
+    let months=now.getMonth()-startDate.getMonth();
+    let days=now.getDate()-startDate.getDate();
 
-    let years = now.getFullYear() - startDate.getFullYear();
-    let months = now.getMonth() - startDate.getMonth();
-    let days = now.getDate() - startDate.getDate();
-
-    if(days < 0){
+    if(days<0){
         months--;
-        days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+        days+=new Date(now.getFullYear(),now.getMonth(),0).getDate();
     }
-
-    if(months < 0){
+    if(months<0){
         years--;
-        months += 12;
+        months+=12;
     }
 
-    document.getElementById("counter").innerHTML =
+    document.getElementById("counter").innerHTML=
     `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
     Han pasado ${years} años, ${months} meses y ${days} días juntos`;
 }
 
 updateCounter();
-setInterval(updateCounter, 86400000);
+setInterval(updateCounter,86400000);
+
+/* MÚSICA */
+const music = document.getElementById("bgMusic");
+const btn = document.getElementById("musicBtn");
+
+function startMusicAuto(){
+    music.volume = 0;
+    music.play().then(()=>{
+        fadeIn();
+        btn.innerText="💗 Pausar canción";
+    }).catch(()=>{});
+}
+
+btn.addEventListener("click",()=>{
+    if(music.paused){
+        music.play();
+        fadeIn();
+        btn.innerText="💗 Pausar canción";
+    }else{
+        music.pause();
+        btn.innerText="🎵 Nuestra canción";
+    }
+});
+
+function fadeIn(){
+    let vol=0;
+    const interval=setInterval(()=>{
+        if(vol<1){
+            vol+=0.05;
+            music.volume=vol;
+        }else{
+            clearInterval(interval);
+        }
+    },200);
+}
 </script>
 
 </body>
