@@ -8,193 +8,81 @@
 <style>
 body{
     margin:0;
-    font-family:'Georgia', serif;
-    background:linear-gradient(180deg,#e8c1cc,#d8a7b4);
+    font-family:'Segoe UI',sans-serif;
+    background:#f6d6df;
     display:flex;
     justify-content:center;
-    padding:30px 10px;
+    align-items:center;
+    min-height:100vh;
 }
 
-.contenedor{
-    background:#e6c4cf;
-    width:100%;
-    max-width:900px;
-    border-radius:30px;
-    padding:30px;
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
-}
-
-.contenido{
-    display:flex;
-    gap:25px;
-}
-
-/* TARJETA */
-.carta{
-    background:#f4e9ed;
-    flex:1;
+.wrapper{
+    width:95%;
+    max-width:1200px;
+    background:#f2b8c6;
     border-radius:25px;
     padding:25px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
-.carta h1{
-    font-size:32px;
-    margin:0 0 10px 0;
-    color:#7a2d44;
+.layout{
+    display:grid;
+    grid-template-columns:1fr 1.2fr;
+    grid-template-rows:auto auto;
+    gap:20px;
 }
 
-.carta p{
-    font-size:18px;
-    color:#6a2f3f;
-    line-height:1.5;
-    margin:12px 0;
-}
-
-/* ÁRBOL */
-.arbol-box{
-    background:#f4e9ed;
-    flex:1.1;
-    border-radius:25px;
-    padding:20px;
+.text{ grid-column:1; grid-row:1; }
+.tree{ 
+    grid-column:2; 
+    grid-row:1;
     display:flex;
     justify-content:center;
     align-items:center;
 }
-
-.arbol{
-    position:relative;
-    width:100%;
-    max-width:280px;
-    height:380px;
-}
-
-/* Tronco corto */
-.tronco{
-    width:22px;
-    height:140px;
-    background:#5a2d1b;
-    position:absolute;
-    bottom:0;
-    left:50%;
-    transform:translateX(-50%);
-    border-radius:12px;
-}
-
-/* Ramas frondosas */
-.rama{
-    width:150px;
-    height:12px;
-    background:#5a2d1b;
-    position:absolute;
-    left:50%;
-    transform-origin:left center;
-    border-radius:10px;
-}
-
-.r1{ top:200px; transform:rotate(35deg); }
-.r2{ top:200px; transform:rotate(-35deg); }
-.r3{ top:160px; transform:rotate(25deg); }
-.r4{ top:160px; transform:rotate(-25deg); }
-.r5{ top:130px; transform:rotate(15deg); }
-.r6{ top:130px; transform:rotate(-15deg); }
-
-/* Corazones */
-.corazon{
-    width:18px;
-    height:18px;
-    position:absolute;
-    transform:rotate(45deg);
-    animation:flotar 4s infinite ease-in-out;
-}
-
-.corazon:before,
-.corazon:after{
-    content:"";
-    width:18px;
-    height:18px;
-    position:absolute;
-    border-radius:50%;
-}
-
-.corazon:before{ top:-9px; left:0; }
-.corazon:after{ left:-9px; top:0; }
-
-/* Colores variados suaves */
-.rosa1{ background:#f3a6b8; }
-.rosa2{ background:#f6b3c2; }
-.rosa3{ background:#e89ab0; }
-.rosa4{ background:#f8c4d0; }
-
-.rosa1:before,.rosa1:after{ background:#f3a6b8; }
-.rosa2:before,.rosa2:after{ background:#f6b3c2; }
-.rosa3:before,.rosa3:after{ background:#e89ab0; }
-.rosa4:before,.rosa4:after{ background:#f8c4d0; }
-
-/* Distribución frondosa */
-.c1{top:60px; left:30%;}
-.c2{top:80px; left:55%;}
-.c3{top:100px; left:35%;}
-.c4{top:120px; left:60%;}
-.c5{top:90px; left:45%;}
-.c6{top:70px; left:70%;}
-.c7{top:140px; left:40%;}
-.c8{top:150px; left:65%;}
-.c9{top:110px; left:50%;}
-.c10{top:170px; left:30%;}
-.c11{top:160px; left:55%;}
-.c12{top:130px; left:75%;}
-.c13{top:95px; left:20%;}
-.c14{top:145px; left:20%;}
-.c15{top:115px; left:80%;}
-
-@keyframes flotar{
-    0%{transform:rotate(45deg) translateY(0);}
-    50%{transform:rotate(45deg) translateY(-6px);}
-    100%{transform:rotate(45deg) translateY(0);}
-}
-
-/* CONTADOR */
-.contador-box{
-    background:#f4e9ed;
-    margin-top:25px;
-    border-radius:25px;
-    padding:20px;
+.counter{
+    grid-column:1 / span 2;
+    grid-row:2;
     text-align:center;
     font-size:18px;
-    color:#6a2f3f;
+    color:#6b2e44;
 }
 
-/* BOTÓN */
-.boton{
-    margin-top:20px;
-    display:flex;
-    justify-content:center;
+.card{
+    background:#ffe6ed;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.05);
 }
 
-button{
-    background:#c45c7a;
+canvas{
+    width:100%;
+    height:450px;
+}
+
+h1{ color:#7a2e45; }
+p{ color:#5a2a3b; line-height:1.6; }
+
+#musicBtn{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#ffffffdd;
     border:none;
-    padding:12px 30px;
+    padding:12px 18px;
     border-radius:30px;
-    font-size:16px;
-    color:white;
     cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    background:#a94a65;
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
 </style>
 </head>
 
 <body>
 
-<div class="contenedor">
+<div class="wrapper">
+<div class="layout">
 
-<div class="contenido">
-
-<div class="carta">
+<div class="card text">
 <h1>Para Laura ❤️</h1>
 <p>Eres la persona que llena mi mundo.</p>
 <p>Eres mi felicidad y mi paz.</p>
@@ -202,78 +90,140 @@ button:hover{
 <p>Y cada día contigo es un regalo maravilloso.</p>
 </div>
 
-<div class="arbol-box">
-<div class="arbol">
-<div class="tronco"></div>
+<div class="card tree">
+<canvas id="treeCanvas"></canvas>
+</div>
 
-<div class="rama r1"></div>
-<div class="rama r2"></div>
-<div class="rama r3"></div>
-<div class="rama r4"></div>
-<div class="rama r5"></div>
-<div class="rama r6"></div>
-
-<div class="corazon rosa1 c1"></div>
-<div class="corazon rosa2 c2"></div>
-<div class="corazon rosa3 c3"></div>
-<div class="corazon rosa4 c4"></div>
-<div class="corazon rosa1 c5"></div>
-<div class="corazon rosa2 c6"></div>
-<div class="corazon rosa3 c7"></div>
-<div class="corazon rosa4 c8"></div>
-<div class="corazon rosa1 c9"></div>
-<div class="corazon rosa2 c10"></div>
-<div class="corazon rosa3 c11"></div>
-<div class="corazon rosa4 c12"></div>
-<div class="corazon rosa2 c13"></div>
-<div class="corazon rosa3 c14"></div>
-<div class="corazon rosa1 c15"></div>
+<div class="card counter" id="counter"></div>
 
 </div>
 </div>
 
-</div>
+<button id="musicBtn">🎵 Nuestra canción</button>
 
-<div class="contador-box" id="contador"></div>
-
-<div class="boton">
-<button onclick="reproducir()">🎵 Nuestra canción</button>
-</div>
-
-<audio id="musica" src="cancion.mp3"></audio>
-
-</div>
+<audio id="bgMusic" loop>
+<source src="cancion.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-function actualizarContador(){
-    const inicio = new Date("2023-08-20");
-    const hoy = new Date();
+const canvas = document.getElementById("treeCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = canvas.offsetWidth;
+canvas.height = 450;
 
-    let años = hoy.getFullYear() - inicio.getFullYear();
-    let meses = hoy.getMonth() - inicio.getMonth();
-    let dias = hoy.getDate() - inicio.getDate();
+let branches=[];
+let heartPoints=[];
 
-    if(dias < 0){
-        meses--;
-        dias += new Date(hoy.getFullYear(), hoy.getMonth(), 0).getDate();
-    }
-    if(meses < 0){
-        años--;
-        meses += 12;
-    }
-
-    document.getElementById("contador").innerHTML =
-        `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
-         Han pasado ${años} años, ${meses} meses y ${dias} días juntos`;
+function grow(){
+    branches.push({
+        x:canvas.width/2,
+        y:canvas.height-20,
+        length:90,
+        angle:-Math.PI/2,
+        width:16,
+        depth:8
+    });
+    animate();
 }
 
-actualizarContador();
+function animate(){
+    if(branches.length===0){
+        drawHearts();
+        return;
+    }
 
-function reproducir(){
-    document.getElementById("musica").play();
+    let next=[];
+
+    branches.forEach(b=>{
+        const x2=b.x+b.length*Math.cos(b.angle);
+        const y2=b.y+b.length*Math.sin(b.angle);
+
+        ctx.beginPath();
+        ctx.strokeStyle="#6e3b20";
+        ctx.lineWidth=b.width;
+        ctx.lineCap="round";
+        ctx.moveTo(b.x,b.y);
+        ctx.lineTo(x2,y2);
+        ctx.stroke();
+
+        heartPoints.push({x:x2,y:y2,depth:b.depth});
+
+        if(b.depth>0){
+            const nl=b.length*0.8;
+            const nw=b.width*0.75;
+
+            next.push({x:x2,y:y2,length:nl,angle:b.angle-0.7,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl,angle:b.angle+0.7,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl*0.85,angle:b.angle-0.3,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl*0.85,angle:b.angle+0.3,width:nw,depth:b.depth-1});
+        }
+    });
+
+    branches=next;
+    setTimeout(animate,80);
 }
+
+function heart(x,y,s,c){
+    ctx.fillStyle=c;
+    ctx.beginPath();
+    ctx.moveTo(x,y);
+    ctx.bezierCurveTo(x,y-s/2,x-s/2,y-s/2,x-s/2,y);
+    ctx.bezierCurveTo(x-s/2,y+s/2,x,y+s/2,x,y+s);
+    ctx.bezierCurveTo(x,y+s/2,x+s/2,y+s/2,x+s/2,y);
+    ctx.bezierCurveTo(x+s/2,y-s/2,x,y-s/2,x,y);
+    ctx.fill();
+}
+
+function drawHearts(){
+    const colors=["#f497b6","#e77fa3","#ff8fab","#f6a5b6","#ffc2d1"];
+
+    heartPoints.forEach(p=>{
+        if(p.depth<=6 || Math.random()>0.2){
+            heart(
+                p.x+(Math.random()*30-15),
+                p.y+(Math.random()*30-15),
+                8+Math.random()*6,
+                colors[Math.floor(Math.random()*colors.length)]
+            );
+        }
+    });
+}
+
+grow();
+
+/* CONTADOR */
+const start=new Date("2023-08-20");
+
+function update(){
+    const now=new Date();
+    let y=now.getFullYear()-start.getFullYear();
+    let m=now.getMonth()-start.getMonth();
+    let d=now.getDate()-start.getDate();
+
+    if(d<0){ m--; d+=new Date(now.getFullYear(),now.getMonth(),0).getDate();}
+    if(m<0){ y--; m+=12;}
+
+    document.getElementById("counter").innerHTML=
+    `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
+    Han pasado ${y} años, ${m} meses y ${d} días juntos`;
+}
+update();
+setInterval(update,86400000);
+
+/* MÚSICA */
+const music=document.getElementById("bgMusic");
+const btn=document.getElementById("musicBtn");
+
+btn.addEventListener("click",()=>{
+    if(music.paused){
+        music.play();
+        btn.innerText="💗 Pausar";
+    }else{
+        music.pause();
+        btn.innerText="🎵 Nuestra canción";
+    }
+});
 </script>
 
 </body>
-    </html>
-    
+</html>
