@@ -8,26 +8,37 @@
 <style>
 body{
     margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(to bottom, #ffe6f0, #fff5f9);
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(to bottom,#ffd6e7,#fff0f6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+/* ZONA CENTRAL */
+#container{
+    width:95%;
+    height:95vh;
+    background:#ffb6d9; /* rosa más fuerte */
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
     display:flex;
     flex-direction:column;
-    height:100vh;
 }
 
 #layout{
     display:flex;
-    height:80vh;
+    height:80%;
 }
 
 #text{
     width:50%;
+    padding:40px;
     display:flex;
     flex-direction:column;
     justify-content:center;
-    padding:40px;
-    color:#8b0033;
-    font-size:18px;
+    color:#7a003c;
 }
 
 #tree-area{
@@ -42,18 +53,21 @@ canvas{
 }
 
 #counter{
-    height:20vh;
+    height:20%;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     text-align:center;
     font-size:16px;
-    color:#ad1457;
+    color:#880e4f;
+    padding:10px;
 }
 </style>
 </head>
 
 <body>
+
+<div id="container">
 
 <div id="layout">
 
@@ -73,22 +87,25 @@ canvas{
 
 <div id="counter"></div>
 
+</div>
+
 <script>
-const canvas = document.getElementById("treeCanvas");
-const ctx = canvas.getContext("2d");
+const canvas=document.getElementById("treeCanvas");
+const ctx=canvas.getContext("2d");
 
 function resize(){
-    canvas.width = window.innerWidth/2;
-    canvas.height = window.innerHeight*0.8;
+    canvas.width=window.innerWidth/2.2;
+    canvas.height=window.innerHeight*0.75;
 }
 resize();
-window.addEventListener("resize", resize);
+window.addEventListener("resize",resize);
 
 let branches=[];
 let endpoints=[];
+let allPoints=[];
 let started=false;
 
-canvas.addEventListener("click", ()=>{
+canvas.addEventListener("click",()=>{
     if(!started){
         started=true;
         startTree();
@@ -97,11 +114,11 @@ canvas.addEventListener("click", ()=>{
 
 function startTree(){
     branches.push({
-        x: canvas.width/2,
-        y: canvas.height,
-        length: 110,
-        angle: -90,
-        width: 16
+        x:canvas.width/2,
+        y:canvas.height,
+        length:120,
+        angle:-90,
+        width:18
     });
     grow();
 }
@@ -115,9 +132,9 @@ function grow(){
     let newBranches=[];
 
     branches.forEach(branch=>{
-        const rad = branch.angle*Math.PI/180;
-        const x2 = branch.x + branch.length*Math.cos(rad);
-        const y2 = branch.y + branch.length*Math.sin(rad);
+        const rad=branch.angle*Math.PI/180;
+        const x2=branch.x+branch.length*Math.cos(rad);
+        const y2=branch.y+branch.length*Math.sin(rad);
 
         ctx.strokeStyle="#6b3e26";
         ctx.lineWidth=branch.width;
@@ -128,15 +145,17 @@ function grow(){
         ctx.lineTo(x2,y2);
         ctx.stroke();
 
+        allPoints.push({x:x2,y:y2,width:branch.width});
+
         if(branch.width>2){
-            const count=2 + Math.floor(Math.random()*2);
+            const count=2+Math.floor(Math.random()*2);
 
             for(let i=0;i<count;i++){
                 newBranches.push({
                     x:x2,
                     y:y2,
-                    length:branch.length*(0.75),
-                    angle:branch.angle + (Math.random()*80 - 40), // MÁS ABIERTO
+                    length:branch.length*0.75,
+                    angle:branch.angle+(Math.random()*90-45),
                     width:branch.width*0.7
                 });
             }
@@ -146,11 +165,11 @@ function grow(){
     });
 
     branches=newBranches;
-    setTimeout(grow,150);
+    setTimeout(grow,140);
 }
 
 function drawHeart(x,y,size){
-    ctx.fillStyle="#ff4d6d";
+    ctx.fillStyle="#ff2e6e";
     ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.bezierCurveTo(x-size,y-size,
@@ -163,12 +182,28 @@ function drawHeart(x,y,size){
 }
 
 function drawFlowers(){
+
+    // flores en puntas
     endpoints.forEach(point=>{
-        // varias flores por punta
-        for(let i=0;i<3;i++){
-            const offsetX=(Math.random()*10-5);
-            const offsetY=(Math.random()*10-5);
-            drawHeart(point.x+offsetX,point.y+offsetY,6);
+        for(let i=0;i<4;i++){
+            drawHeart(
+                point.x+(Math.random()*12-6),
+                point.y+(Math.random()*12-6),
+                6
+            );
+        }
+    });
+
+    // flores en ramas medias (más frondoso)
+    allPoints.forEach(point=>{
+        if(point.width<8){ 
+            if(Math.random()>0.5){
+                drawHeart(
+                    point.x+(Math.random()*10-5),
+                    point.y+(Math.random()*10-5),
+                    5
+                );
+            }
         }
     });
 }
