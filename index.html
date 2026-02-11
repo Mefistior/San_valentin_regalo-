@@ -17,41 +17,20 @@ body{
 }
 
 .wrapper{
-    width:98%;
-    max-width:1200px;
+    width:95%;
+    max-width:1100px;
     background:#f2b8c6;
     border-radius:25px;
-    padding:15px;
+    padding:20px;
     box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
-/* DIAGRAMA RESPETADO */
+/* DIAGRAMA */
 .layout{
     display:grid;
-    grid-template-columns:0.9fr 1.3fr; /* árbol más ancho */
+    grid-template-columns:1fr 1fr;
     grid-template-rows:auto auto;
     gap:15px;
-}
-
-.text{
-    grid-column:1;
-    grid-row:1;
-}
-
-.tree{
-    grid-column:2;
-    grid-row:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.counter{
-    grid-column:1 / span 2;
-    grid-row:2;
-    text-align:center;
-    font-size:18px;
-    color:#6b2e44;
 }
 
 .card{
@@ -61,14 +40,41 @@ body{
     box-shadow:0 8px 20px rgba(0,0,0,0.05);
 }
 
-canvas{
-    width:100%;
-    height:430px;
+/* TEXTO */
+.text{
+    grid-column:1;
+    grid-row:1;
 }
 
-h1{ color:#7a2e45; font-size:20px; }
-p{ color:#5a2a3b; line-height:1.5; font-size:14px; }
+h1{ color:#7a2e45; margin-bottom:10px; }
+p{ color:#5a2a3b; line-height:1.5; }
 
+/* ÁRBOL */
+.tree{
+    grid-column:2;
+    grid-row:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden; /* PARA QUE SE CORTE EN BORDES */
+    position:relative;
+}
+
+canvas{
+    width:110%;
+    height:500px;
+}
+
+/* CONTADOR */
+.counter{
+    grid-column:1 / span 2;
+    grid-row:2;
+    text-align:center;
+    font-size:17px;
+    color:#6b2e44;
+}
+
+/* BOTÓN */
 #musicBtn{
     position:fixed;
     bottom:20px;
@@ -86,7 +92,6 @@ p{ color:#5a2a3b; line-height:1.5; font-size:14px; }
 <body>
 
 <div class="wrapper">
-
 <div class="layout">
 
 <div class="card text">
@@ -115,27 +120,31 @@ p{ color:#5a2a3b; line-height:1.5; font-size:14px; }
 <script>
 const canvas = document.getElementById("treeCanvas");
 const ctx = canvas.getContext("2d");
+
 canvas.width = canvas.offsetWidth;
-canvas.height = 430;
+canvas.height = 500;
+
+/* ===== ÁRBOL ===== */
 
 let branches=[];
-let heartPoints=[];
+let flowers=[];
 
 function grow(){
     branches.push({
         x:canvas.width/2,
-        y:canvas.height-10,
-        length:95,
+        y:canvas.height-20,
+        length:130,
         angle:-Math.PI/2,
-        width:14,
-        depth:7 /* menos ramas */
+        width:22,          // TRONCO MÁS GRUESO
+        depth:7            // MENOS RAMAS LOCAS
     });
     animate();
 }
 
 function animate(){
+
     if(branches.length===0){
-        drawHearts();
+        drawFlowers();
         return;
     }
 
@@ -153,42 +162,38 @@ function animate(){
         ctx.lineTo(x2,y2);
         ctx.stroke();
 
-        heartPoints.push({x:x2,y:y2,depth:b.depth});
+        flowers.push({x:x2,y:y2,depth:b.depth});
 
         if(b.depth>0){
             const nl=b.length*0.75;
             const nw=b.width*0.7;
 
-            next.push({x:x2,y:y2,length:nl,angle:b.angle-0.6,width:nw,depth:b.depth-1});
-            next.push({x:x2,y:y2,length:nl,angle:b.angle+0.6,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl,angle:b.angle-0.5,width:nw,depth:b.depth-1});
+            next.push({x:x2,y:y2,length:nl,angle:b.angle+0.5,width:nw,depth:b.depth-1});
         }
     });
 
     branches=next;
-    setTimeout(animate,100);
+    setTimeout(animate,80);
 }
 
-function heart(x,y,s,c){
-    ctx.fillStyle=c;
+/* FLORES */
+function flower(x,y,size,color){
+    ctx.fillStyle=color;
     ctx.beginPath();
-    ctx.moveTo(x,y);
-    ctx.bezierCurveTo(x,y-s/2,x-s/2,y-s/2,x-s/2,y);
-    ctx.bezierCurveTo(x-s/2,y+s/2,x,y+s/2,x,y+s);
-    ctx.bezierCurveTo(x,y+s/2,x+s/2,y+s/2,x+s/2,y);
-    ctx.bezierCurveTo(x+s/2,y-s/2,x,y-s/2,x,y);
+    ctx.arc(x,y,size,0,Math.PI*2);
     ctx.fill();
 }
 
-function drawHearts(){
-    const colors=["#f497b6","#e77fa3","#ff8fab","#f6a5b6","#ffc2d1"];
+function drawFlowers(){
+    const colors=["#ff8fab","#f497b6","#e77fa3","#ffc2d1"];
 
-    heartPoints.forEach(p=>{
-        /* corazones también en zona media */
-        if(p.depth<=5 || Math.random()>0.2){
-            heart(
-                p.x+(Math.random()*25-12),
-                p.y+(Math.random()*25-12),
-                8+Math.random()*8,
+    flowers.forEach(p=>{
+        if(p.depth<=4 || Math.random()>0.4){
+            flower(
+                p.x+(Math.random()*15-7),
+                p.y+(Math.random()*15-7),
+                4+Math.random()*5,
                 colors[Math.floor(Math.random()*colors.length)]
             );
         }
@@ -197,7 +202,8 @@ function drawHearts(){
 
 grow();
 
-/* CONTADOR */
+/* ===== CONTADOR ===== */
+
 const start=new Date("2023-08-20");
 
 function update(){
@@ -216,7 +222,8 @@ function update(){
 update();
 setInterval(update,86400000);
 
-/* MÚSICA */
+/* ===== MÚSICA ===== */
+
 const music=document.getElementById("bgMusic");
 const btn=document.getElementById("musicBtn");
 
