@@ -21,27 +21,21 @@ body{
     max-width:1200px;
     background:#f2b8c6;
     border-radius:25px;
-    padding:18px;
+    padding:20px;
     box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
-/* DIAGRAMA */
 .layout{
     display:grid;
     grid-template-columns:0.9fr 1.3fr;
-    grid-template-rows:auto auto;
-    gap:20px;
+    gap:25px;
 }
 
 .text{
-    grid-column:1;
-    grid-row:1;
     max-width:420px;
 }
 
 .tree{
-    grid-column:2;
-    grid-row:1;
     display:flex;
     justify-content:center;
     align-items:flex-end;
@@ -49,10 +43,10 @@ body{
 
 .counter{
     grid-column:1 / span 2;
-    grid-row:2;
     text-align:center;
     font-size:18px;
     color:#6b2e44;
+    margin-top:20px;
 }
 
 .card{
@@ -86,12 +80,6 @@ p{ color:#5a2a3b; line-height:1.6; }
 @media(max-width:700px){
     .layout{
         grid-template-columns:1fr;
-    }
-    .text{
-        grid-column:1;
-    }
-    .tree{
-        grid-column:1;
     }
     .counter{
         grid-column:1;
@@ -143,7 +131,7 @@ function grow(){
         y:canvas.height-20,
         length:120,
         angle:-Math.PI/2,
-        width:22,
+        width:24,
         depth:7
     });
     animate();
@@ -151,7 +139,7 @@ function grow(){
 
 function animate(){
     if(branches.length===0){
-        drawHearts();
+        setTimeout(drawHearts,600);
         return;
     }
 
@@ -181,7 +169,9 @@ function animate(){
     });
 
     branches=next;
-    setTimeout(animate,100);
+
+    /* MÁS LENTO AQUÍ */
+    setTimeout(animate,220); 
 }
 
 function heart(x,y,s,c){
@@ -199,7 +189,7 @@ function drawHearts(){
     const colors=["#f497b6","#e77fa3","#ff8fab","#f6a5b6","#ffc2d1"];
 
     heartPoints.forEach(p=>{
-        if(Math.random()>0.2){
+        if(Math.random()>0.15){
             heart(
                 p.x+(Math.random()*30-15),
                 p.y+(Math.random()*30-15),
