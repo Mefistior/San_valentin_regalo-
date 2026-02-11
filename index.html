@@ -7,182 +7,182 @@
 
 <style>
 body{
-  margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background:#f4cdd6;
-  display:flex;
-  justify-content:center;
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(180deg,#f8d7e3,#f3c1d6);
+    display:flex;
+    justify-content:center;
+    padding:30px 15px;
 }
 
-.contenedor{
-  width:95%;
-  max-width:900px;
-  background:#e8b9c3;
-  margin:20px;
-  padding:20px;
-  border-radius:30px;
+.container{
+    max-width:1000px;
+    width:100%;
 }
 
-.fila{
-  display:flex;
-  gap:20px;
-}
-
+/* TARJETAS */
 .card{
-  background:#f6dde3;
-  border-radius:25px;
-  padding:20px;
-  flex:1;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    background:#fff0f6;
+    border-radius:25px;
+    padding:35px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
-h1{
-  color:#7a2e3a;
+/* FILA SUPERIOR */
+.top{
+    display:flex;
+    gap:40px;
 }
 
-p{
-  color:#5a3a40;
+/* TEXTO */
+.texto{
+    flex:1;
+    font-size:22px;
+    line-height:1.6;
+    color:#6b2c46;
 }
 
-.contador-card{
-  margin-top:20px;
-  background:#f6dde3;
-  border-radius:25px;
-  padding:20px;
-  text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+.texto h1{
+    font-size:38px;
+    margin-bottom:25px;
 }
 
-button{
-  margin-top:15px;
-  padding:10px 20px;
-  border:none;
-  border-radius:20px;
-  background:#d88fa0;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
+/* ARBOL */
+.arbol-area{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
 }
 
-button:hover{
-  background:#c47a8c;
-}
-
-/* Árbol */
-.arbol{
-  display:none;
-  margin-top:10px;
-  position:relative;
-  height:250px;
+svg{
+    width:100%;
+    max-width:420px;
+    transition:0.8s ease;
 }
 
 .tronco{
-  width:15px;
-  height:120px;
-  background:#6d3b24;
-  margin:0 auto;
-  border-radius:10px;
+    stroke:#6b3e26;
+    stroke-width:18;
+    fill:none;
+    stroke-linecap:round;
 }
-
-.rama{
-  position:absolute;
-  width:80px;
-  height:10px;
-  background:#6d3b24;
-  border-radius:10px;
-}
-
-.r1{ top:60px; left:30px; transform:rotate(-30deg);}
-.r2{ top:60px; right:30px; transform:rotate(30deg);}
-.r3{ top:100px; left:40px; transform:rotate(-20deg);}
-.r4{ top:100px; right:40px; transform:rotate(20deg);}
 
 .corazon{
-  position:absolute;
-  font-size:16px;
-  animation:flotar 3s infinite ease-in-out;
+    font-size:26px;
+    opacity:0;
+    transition:1s ease;
 }
 
-@keyframes flotar{
-  0%{ transform:translateY(0);}
-  50%{ transform:translateY(-8px);}
-  100%{ transform:translateY(0);}
+.crecer{
+    transform:scale(1.15);
+}
+
+.mostrar{
+    opacity:1;
+}
+
+/* CONTADOR */
+.contador{
+    margin-top:40px;
+    text-align:center;
+    font-size:22px;
+    color:#6b2c46;
 }
 </style>
 </head>
 
 <body>
 
-<div class="contenedor">
+<div class="container">
 
-  <div class="fila">
+<div class="card">
 
-    <!-- LETRAS -->
-    <div class="card">
-      <h1>Para Laura ❤️</h1>
-      <p>Eres la persona que llena mi mundo.</p>
-      <p>Eres mi felicidad y mi paz.</p>
-      <p>Eres el amor que encontré sin buscar.</p>
-      <p>Y cada día contigo es un regalo maravilloso.</p>
-    </div>
+<div class="top">
 
-    <!-- ARBOL -->
-    <div class="card" style="text-align:center;">
-      <button onclick="mostrarArbol()">Presiona aquí 🌳</button>
+<!-- LETRAS -->
+<div class="texto">
+<h1>Para Laura ❤️</h1>
 
-      <div class="arbol" id="arbol">
-        <div class="tronco"></div>
-        <div class="rama r1"></div>
-        <div class="rama r2"></div>
-        <div class="rama r3"></div>
-        <div class="rama r4"></div>
-
-        <!-- corazones arriba y en medio -->
-        <div class="corazon" style="top:20px; left:45%;">💗</div>
-        <div class="corazon" style="top:30px; left:30%;">💖</div>
-        <div class="corazon" style="top:30px; right:30%;">💘</div>
-        <div class="corazon" style="top:80px; left:35%;">💝</div>
-        <div class="corazon" style="top:90px; right:35%;">💓</div>
-        <div class="corazon" style="top:120px; left:48%;">💗</div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- CONTADOR -->
-  <div class="contador-card">
-    <p>Mi amor por ti comenzó el 20/08/2023 ❤️</p>
-    <p id="tiempo"></p>
-    <button onclick="iniciarMusica()">🎵 Nuestra canción</button>
-  </div>
-
+<p>Eres la persona que llena mi mundo.</p>
+<p>Eres mi felicidad y mi paz.</p>
+<p>Eres el amor que encontré sin buscar.</p>
+<p>Y cada día contigo es un regalo maravilloso.</p>
 </div>
 
-<audio id="musica" src="cancion.mp3"></audio>
+<!-- ÁRBOL -->
+<div class="arbol-area" onclick="activarArbol()">
+
+<svg id="arbol" viewBox="0 0 300 400">
+
+<!-- TRONCO -->
+<line class="tronco" x1="150" y1="380" x2="150" y2="250"/>
+<line class="tronco" x1="150" y1="280" x2="100" y2="220"/>
+<line class="tronco" x1="150" y1="280" x2="200" y2="220"/>
+<line class="tronco" x1="150" y1="250" x2="80" y2="170"/>
+<line class="tronco" x1="150" y1="250" x2="220" y2="170"/>
+<line class="tronco" x1="100" y1="220" x2="60" y2="150"/>
+<line class="tronco" x1="200" y1="220" x2="240" y2="150"/>
+
+<!-- CORAZONES (ARRIBA Y MEDIO) -->
+<text class="corazon" x="150" y="140">❤️</text>
+<text class="corazon" x="110" y="150">💗</text>
+<text class="corazon" x="190" y="150">💖</text>
+<text class="corazon" x="80" y="170">💕</text>
+<text class="corazon" x="220" y="170">💘</text>
+<text class="corazon" x="150" y="190">💞</text>
+<text class="corazon" x="120" y="200">💓</text>
+<text class="corazon" x="180" y="200">💝</text>
+
+</svg>
+
+</div>
+</div>
+
+<!-- CONTADOR -->
+<div class="contador">
+Mi amor por ti comenzó el 20/08/2023 ❤️<br>
+Han pasado <span id="tiempo"></span>
+</div>
+
+</div>
+</div>
+
+<!-- AUDIO -->
+<audio id="musica" src="canción.mp3.mp3"></audio>
 
 <script>
-function mostrarArbol(){
-  document.getElementById("arbol").style.display="block";
-  iniciarMusica();
+
+function activarArbol(){
+    document.getElementById("arbol").classList.add("crecer");
+
+    document.querySelectorAll(".corazon").forEach(c=>{
+        c.classList.add("mostrar");
+    });
+
+    document.getElementById("musica").play();
 }
 
-function iniciarMusica(){
-  const audio = document.getElementById("musica");
-  audio.play();
+/* CONTADOR */
+function actualizar(){
+    const inicio = new Date("2023-08-20");
+    const ahora = new Date();
+
+    const diferencia = ahora - inicio;
+
+    const dias = Math.floor(diferencia / (1000*60*60*24));
+    const años = Math.floor(dias/365);
+    const meses = Math.floor((dias%365)/30);
+    const diasRestantes = dias - (años*365) - (meses*30);
+
+    document.getElementById("tiempo").innerText =
+    años+" años, "+meses+" meses y "+diasRestantes+" días juntos";
 }
 
-function actualizarContador(){
-  const inicio = new Date("2023-08-20");
-  const hoy = new Date();
+actualizar();
+setInterval(actualizar,1000);
 
-  const diferencia = hoy - inicio;
-  const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-
-  document.getElementById("tiempo").innerText =
-    "Han pasado " + dias + " días juntos 💕";
-}
-
-actualizarContador();
 </script>
 
 </body>
