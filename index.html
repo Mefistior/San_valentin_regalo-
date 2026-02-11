@@ -3,218 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Regalo de San Valentín</title>
+<title>Para Laura ❤️</title>
 
 <style>
 body{
     margin:0;
     font-family: 'Georgia', serif;
-    background: linear-gradient(to bottom,#e9b7c5,#dba3b4);
+    background: linear-gradient(135deg,#e7b8c2,#dba6b3);
     display:flex;
     justify-content:center;
     align-items:center;
     min-height:100vh;
 }
 
-.container{
-    width:90%;
-    max-width:1000px;
-    background:#e4c2cc;
+/* CONTENEDOR PRINCIPAL ENSANCHADO */
+.contenedor{
+    max-width:1200px;   /* ← SOLO ESTO SE AGRANDÓ */
+    width:95%;
+    margin:auto;
     padding:40px;
-    border-radius:25px;
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    background:#e6c8cf;
+    border-radius:30px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.15);
 }
 
-.top{
+/* FILA FLEX */
+.fila{
     display:flex;
-    gap:30px;
+    gap:40px; /* ← MÁS ESPACIO ENTRE CARTA Y ÁRBOL */
 }
 
-.card{
+/* COLUMNA IZQUIERDA */
+.carta{
     flex:1;
-    background:#f4e7ec;
-    padding:35px;
-    border-radius:25px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    background:#f2e5e9;
+    padding:40px;
+    border-radius:30px;
 }
 
-h1{
+.carta h1{
     margin-top:0;
-    color:#7b2e46;
+    font-size:48px;
+    color:#7a2e44;
 }
 
-p{
-    color:#6a3a4a;
-    font-size:18px;
+.carta p{
+    font-size:22px;
+    color:#6b2d3d;
     line-height:1.6;
+    max-width:480px; /* evita que el texto se vea exagerado */
 }
 
-.tree-card{
+/* COLUMNA DERECHA */
+.arbol-container{
+    flex:1;
+    background:#f2e5e9;
+    border-radius:30px;
     display:flex;
     justify-content:center;
     align-items:center;
+    position:relative;
 }
 
-canvas{
-    width:100%;
-    height:420px;
+/* ÁRBOL */
+.arbol{
+    position:relative;
+    width:200px;
+    height:300px;
 }
 
-.counter{
+.tronco{
+    position:absolute;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:14px;
+    height:150px;
+    background:#5a2d1a;
+}
+
+.rama{
+    position:absolute;
+    width:80px;
+    height:8px;
+    background:#5a2d1a;
+}
+
+.rama1{
+    bottom:120px;
+    left:50%;
+    transform:translateX(-50%) rotate(-30deg);
+}
+
+.rama2{
+    bottom:120px;
+    left:50%;
+    transform:translateX(-50%) rotate(30deg);
+}
+
+.corazon{
+    position:absolute;
+    width:16px;
+    height:16px;
+    background:pink;
+    transform:rotate(45deg);
+    animation:flotar 3s infinite ease-in-out;
+}
+
+.corazon::before,
+.corazon::after{
+    content:'';
+    position:absolute;
+    width:16px;
+    height:16px;
+    background:pink;
+    border-radius:50%;
+}
+
+.corazon::before{
+    top:-8px;
+    left:0;
+}
+
+.corazon::after{
+    left:-8px;
+    top:0;
+}
+
+@keyframes flotar{
+    0%{transform:translateY(0) rotate(45deg);}
+    50%{transform:translateY(-10px) rotate(45deg);}
+    100%{transform:translateY(0) rotate(45deg);}
+}
+
+/* CONTADOR */
+.contador{
     margin-top:30px;
-    background:#f4e7ec;
-    padding:20px;
+    background:#f2e5e9;
+    padding:25px;
     border-radius:20px;
     text-align:center;
-    color:#7b2e46;
-    font-size:18px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    font-size:22px;
+    color:#6b2d3d;
 }
 
-.music{
-    margin-top:25px;
-    text-align:center;
-}
-
-.music button{
-    padding:12px 28px;
+/* BOTÓN */
+button{
+    margin-top:30px;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    padding:15px 40px;
+    font-size:20px;
     border:none;
-    border-radius:30px;
-    background:#c86586;
+    border-radius:40px;
+    background:#c45b7c;
     color:white;
-    font-size:16px;
     cursor:pointer;
-    transition:0.3s;
-}
-
-.music button:hover{
-    background:#b75474;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="contenedor">
 
-    <div class="top">
+    <div class="fila">
 
-        <div class="card">
+        <div class="carta">
             <h1>Para Laura ❤️</h1>
-            <p>Eres la persona que llena mi mundo.</p>
-            <p>Eres mi felicidad y mi paz.</p>
-            <p>Eres el amor que encontré sin buscar.</p>
-            <p>Y cada día contigo es un regalo maravilloso.</p>
+
+            <p>
+            Eres la persona que llena mi mundo.<br><br>
+            Eres mi felicidad y mi paz.<br><br>
+            Eres el amor que encontré sin buscar.<br><br>
+            Y cada día contigo es un regalo maravilloso.
+            </p>
         </div>
 
-        <div class="card tree-card">
-            <canvas id="treeCanvas"></canvas>
+        <div class="arbol-container">
+            <div class="arbol">
+                <div class="tronco"></div>
+                <div class="rama rama1"></div>
+                <div class="rama rama2"></div>
+
+                <div class="corazon" style="top:60px; left:40px;"></div>
+                <div class="corazon" style="top:80px; left:90px;"></div>
+                <div class="corazon" style="top:50px; left:120px;"></div>
+                <div class="corazon" style="top:100px; left:70px;"></div>
+                <div class="corazon" style="top:70px; left:140px;"></div>
+            </div>
         </div>
 
     </div>
 
-    <div class="counter" id="counter"></div>
+    <div class="contador" id="contador"></div>
 
-    <div class="music">
-        <button id="playBtn">🎵 Nuestra canción</button>
-        <audio id="music" src="cancion.mp3"></audio>
-    </div>
+    <button onclick="reproducir()">🎵 Nuestra canción</button>
+
+    <audio id="audio" src="cancion.mp3"></audio>
 
 </div>
 
 <script>
-const canvas = document.getElementById("treeCanvas");
-const ctx = canvas.getContext("2d");
+const inicio = new Date("2023-08-20");
 
-function resizeCanvas(){
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+function actualizarContador(){
+    const hoy = new Date();
+    const diff = hoy - inicio;
 
-let animationStarted = false;
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-function drawBranch(x,y,length,angle,depth){
-    if(depth===0) return;
-
-    const x2 = x + length*Math.cos(angle);
-    const y2 = y + length*Math.sin(angle);
-
-    ctx.beginPath();
-    ctx.moveTo(x,y);
-    ctx.lineTo(x2,y2);
-    ctx.strokeStyle="#6b3e26";
-    ctx.lineWidth = depth+1;
-    ctx.stroke();
-
-    drawBranch(x2,y2,length*0.75,angle-0.4,depth-1);
-    drawBranch(x2,y2,length*0.75,angle+0.4,depth-1);
+    document.getElementById("contador").innerHTML =
+    "Mi amor por ti comenzó el 20/08/2023 ❤️<br>Han pasado " +
+    dias + " días juntos";
 }
 
-function drawHeart(x,y,size,color){
-    ctx.beginPath();
-    ctx.moveTo(x,y);
-    ctx.bezierCurveTo(x,y-size/2,x-size/2,y-size/2,x-size/2,y);
-    ctx.bezierCurveTo(x-size/2,y+size/2,x,y+size/2,x,y+size);
-    ctx.bezierCurveTo(x,y+size/2,x+size/2,y+size/2,x+size/2,y);
-    ctx.bezierCurveTo(x+size/2,y-size/2,x,y-size/2,x,y);
-    ctx.fillStyle=color;
-    ctx.fill();
-}
+actualizarContador();
 
-function animateTree(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    drawBranch(canvas.width/2,canvas.height,120,-Math.PI/2,7);
-
-    const colors=["#ff6f91","#ff8fab","#ff4d6d","#f78fb3"];
-    for(let i=0;i<120;i++){
-        const x = canvas.width/2 + (Math.random()-0.5)*220;
-        const y = canvas.height/2 + (Math.random()-0.5)*180;
-        drawHeart(x,y,10,colors[Math.floor(Math.random()*colors.length)]);
-    }
-}
-
-canvas.addEventListener("click",()=>{
-    if(!animationStarted){
-        animationStarted=true;
-        animateTree();
-    }
-});
-
-// Contador exacto
-const startDate = new Date("2023-08-20");
-
-function updateCounter(){
-    const now = new Date();
-    let years = now.getFullYear() - startDate.getFullYear();
-    let months = now.getMonth() - startDate.getMonth();
-    let days = now.getDate() - startDate.getDate();
-
-    if(days<0){
-        months--;
-        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-        days += prevMonth;
-    }
-
-    if(months<0){
-        years--;
-        months+=12;
-    }
-
-    document.getElementById("counter").innerHTML =
-    `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
-    Han pasado ${years} años, ${months} meses y ${days} días juntos`;
-}
-updateCounter();
-setInterval(updateCounter,1000);
-
-// Música
-const audio = document.getElementById("music");
-document.getElementById("playBtn").addEventListener("click",()=>{
+function reproducir(){
+    const audio = document.getElementById("audio");
     audio.play();
-});
+}
 </script>
 
 </body>
