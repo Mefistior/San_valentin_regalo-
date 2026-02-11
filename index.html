@@ -12,85 +12,85 @@ body{
     background: linear-gradient(to bottom, #ffe6f0, #fff5f9);
     display:flex;
     flex-direction:column;
-    min-height:100vh;
-    overflow-x:hidden;
+    height:100vh;
 }
 
-#contenido{
+#layout{
+    display:flex;
+    height:80vh;
+}
+
+#text{
+    width:50%;
     display:flex;
     flex-direction:column;
-    align-items:center;
     justify-content:center;
-    text-align:center;
-    padding:30px 20px 10px 20px;
-}
-
-h1{
-    color:#c2185b;
-    margin-bottom:10px;
-}
-
-p{
+    padding:40px;
     color:#8b0033;
-    max-width:500px;
-    margin:6px auto;
-    font-size:16px;
+    font-size:18px;
+}
+
+#tree-area{
+    width:50%;
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
 }
 
 canvas{
-    margin-top:20px;
+    display:block;
 }
 
 #counter{
-    margin-top:15px;
-    font-size:15px;
+    height:20vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-size:16px;
     color:#ad1457;
-}
-
-@media(min-width:768px){
-    #contenido{
-        padding-top:50px;
-    }
-    p{
-        font-size:18px;
-    }
 }
 </style>
 </head>
 
 <body>
 
-<div id="contenido">
-    <h1>Para Laura ❤️</h1>
+<div id="layout">
 
+<div id="text">
+    <h2>Para Laura ❤️</h2>
     <p>Eres la persona que llena mi mundo.</p>
     <p>Eres mi felicidad y mi paz.</p>
     <p>Eres el amor que encontré sin buscar.</p>
     <p>Y cada día contigo es un regalo maravilloso.</p>
-
-    <canvas id="treeCanvas"></canvas>
-
-    <div id="counter"></div>
 </div>
+
+<div id="tree-area">
+    <canvas id="treeCanvas"></canvas>
+</div>
+
+</div>
+
+<div id="counter"></div>
 
 <script>
 const canvas = document.getElementById("treeCanvas");
 const ctx = canvas.getContext("2d");
 
-function resizeCanvas(){
-    canvas.width = Math.min(window.innerWidth * 0.9, 500);
-    canvas.height = 400;
+function resize(){
+    canvas.width = window.innerWidth/2;
+    canvas.height = window.innerHeight*0.8;
 }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+resize();
+window.addEventListener("resize", resize);
 
-let branches = [];
-let endpoints = [];
-let started = false;
+let branches=[];
+let endpoints=[];
+let started=false;
 
-canvas.addEventListener("click", () => {
+canvas.addEventListener("click", ()=>{
     if(!started){
-        started = true;
+        started=true;
         startTree();
     }
 });
@@ -99,55 +99,54 @@ function startTree(){
     branches.push({
         x: canvas.width/2,
         y: canvas.height,
-        length: 90,
+        length: 110,
         angle: -90,
-        width: 14
+        width: 16
     });
     grow();
 }
 
 function grow(){
-    if(branches.length === 0){
+    if(branches.length===0){
         drawFlowers();
         return;
     }
 
-    let newBranches = [];
+    let newBranches=[];
 
-    branches.forEach(branch => {
+    branches.forEach(branch=>{
+        const rad = branch.angle*Math.PI/180;
+        const x2 = branch.x + branch.length*Math.cos(rad);
+        const y2 = branch.y + branch.length*Math.sin(rad);
 
-        const rad = branch.angle * Math.PI/180;
-        const x2 = branch.x + branch.length * Math.cos(rad);
-        const y2 = branch.y + branch.length * Math.sin(rad);
-
-        ctx.strokeStyle = "#6b3e26";
-        ctx.lineWidth = branch.width;
-        ctx.lineCap = "round";
+        ctx.strokeStyle="#6b3e26";
+        ctx.lineWidth=branch.width;
+        ctx.lineCap="round";
 
         ctx.beginPath();
-        ctx.moveTo(branch.x, branch.y);
-        ctx.lineTo(x2, y2);
+        ctx.moveTo(branch.x,branch.y);
+        ctx.lineTo(x2,y2);
         ctx.stroke();
 
-        if(branch.width > 2){
-            const count = Math.random() > 0.5 ? 2 : 3;
+        if(branch.width>2){
+            const count=2 + Math.floor(Math.random()*2);
 
             for(let i=0;i<count;i++){
                 newBranches.push({
-                    x: x2,
-                    y: y2,
-                    length: branch.length * (0.7 + Math.random()*0.1),
-                    angle: branch.angle + (Math.random()*40 - 20),
-                    width: branch.width * 0.7
+                    x:x2,
+                    y:y2,
+                    length:branch.length*(0.75),
+                    angle:branch.angle + (Math.random()*80 - 40), // MÁS ABIERTO
+                    width:branch.width*0.7
                 });
             }
-        } else {
+        }else{
             endpoints.push({x:x2,y:y2});
         }
     });
 
-    branches = newBranches;
-    setTimeout(grow,180);
+    branches=newBranches;
+    setTimeout(grow,150);
 }
 
 function drawHeart(x,y,size){
@@ -155,37 +154,37 @@ function drawHeart(x,y,size){
     ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.bezierCurveTo(x-size,y-size,
-                      x-size*1.5,y+size/2,
+                      x-size*1.6,y+size/2,
                       x,y+size);
-    ctx.bezierCurveTo(x+size*1.5,y+size/2,
+    ctx.bezierCurveTo(x+size*1.6,y+size/2,
                       x+size,y-size,
                       x,y);
     ctx.fill();
 }
 
 function drawFlowers(){
-    let i=0;
-    const interval = setInterval(()=>{
-        if(i>=endpoints.length){
-            clearInterval(interval);
-            return;
+    endpoints.forEach(point=>{
+        // varias flores por punta
+        for(let i=0;i<3;i++){
+            const offsetX=(Math.random()*10-5);
+            const offsetY=(Math.random()*10-5);
+            drawHeart(point.x+offsetX,point.y+offsetY,6);
         }
-        drawHeart(endpoints[i].x,endpoints[i].y,6);
-        i++;
-    },80);
+    });
 }
 
-// Contador
-const startDate = new Date("2023-08-20");
-function updateCounter(){
-    const now = new Date();
-    const diff = now - startDate;
-    const days = Math.floor(diff/(1000*60*60*24));
-    const years = Math.floor(days/365);
-    const months = Math.floor((days%365)/30);
-    const remainingDays = days%30;
+// contador
+const startDate=new Date("2023-08-20");
 
-    document.getElementById("counter").innerText =
+function updateCounter(){
+    const now=new Date();
+    const diff=now-startDate;
+    const days=Math.floor(diff/(1000*60*60*24));
+    const years=Math.floor(days/365);
+    const months=Math.floor((days%365)/30);
+    const remainingDays=days%30;
+
+    document.getElementById("counter").innerText=
     `Mi amor por ti comenzó el 20/08/2023 ❤️
 Han pasado ${years} años, ${months} meses y ${remainingDays} días juntos`;
 }
