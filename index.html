@@ -3,228 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para Laura ❤️</title>
+<title>Regalo de San Valentín</title>
 
 <style>
 body{
     margin:0;
-    font-family:'Segoe UI',sans-serif;
-    background:linear-gradient(to bottom,#ffd6e7,#fff0f6);
+    font-family: 'Segoe UI', sans-serif;
+    background: #fbe4ec;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
 }
 
-/* ZONA CENTRAL */
-#container{
+.main-container{
     width:95%;
-    height:95vh;
-    background:#ffb6d9; /* rosa más fuerte */
+    max-width:1100px;
+    background:#f6c9da;
+    border-radius:25px;
+    padding:30px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+}
+
+.top-section{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.card{
+    background:#f9dbe6;
     border-radius:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.15);
-    display:flex;
-    flex-direction:column;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
-#layout{
-    display:flex;
-    height:80%;
+.text-card{
+    flex:1;
+    min-width:280px;
 }
 
-#text{
-    width:50%;
-    padding:40px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    color:#7a003c;
-}
-
-#tree-area{
-    width:50%;
+.tree-card{
+    flex:1;
+    min-width:280px;
     display:flex;
     justify-content:center;
-    align-items:flex-end;
+    align-items:center;
+}
+
+.counter-card{
+    margin-top:25px;
+    text-align:center;
+    font-size:18px;
+}
+
+h1{
+    margin-top:0;
+    color:#8e3b5f;
+}
+
+p{
+    color:#6d3b52;
+    line-height:1.6;
 }
 
 canvas{
-    display:block;
-}
-
-#counter{
-    height:20%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    font-size:16px;
-    color:#880e4f;
-    padding:10px;
+    width:100%;
+    height:400px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="container">
+<div class="main-container">
 
-<div id="layout">
+<div class="top-section">
 
-<div id="text">
-    <h2>Para Laura ❤️</h2>
-    <p>Eres la persona que llena mi mundo.</p>
-    <p>Eres mi felicidad y mi paz.</p>
-    <p>Eres el amor que encontré sin buscar.</p>
-    <p>Y cada día contigo es un regalo maravilloso.</p>
+<div class="card text-card">
+<h1>Para Laura ❤️</h1>
+<p>Eres la persona que llena mi mundo.</p>
+<p>Eres mi felicidad y mi paz.</p>
+<p>Eres el amor que encontré sin buscar.</p>
+<p>Y cada día contigo es un regalo maravilloso.</p>
 </div>
 
-<div id="tree-area">
-    <canvas id="treeCanvas"></canvas>
+<div class="card tree-card">
+<canvas id="treeCanvas"></canvas>
 </div>
 
 </div>
 
-<div id="counter"></div>
+<div class="card counter-card" id="counter"></div>
 
 </div>
 
 <script>
-const canvas=document.getElementById("treeCanvas");
-const ctx=canvas.getContext("2d");
+const canvas = document.getElementById("treeCanvas");
+const ctx = canvas.getContext("2d");
 
-function resize(){
-    canvas.width=window.innerWidth/2.2;
-    canvas.height=window.innerHeight*0.75;
-}
-resize();
-window.addEventListener("resize",resize);
+canvas.width = canvas.offsetWidth;
+canvas.height = 400;
 
-let branches=[];
-let endpoints=[];
-let allPoints=[];
-let started=false;
+/* 🌳 Árbol Frondoso */
+function drawBranch(x,y,length,angle,width,depth){
+    if(depth===0) return;
 
-canvas.addEventListener("click",()=>{
-    if(!started){
-        started=true;
-        startTree();
+    ctx.beginPath();
+    ctx.lineWidth = width;
+    ctx.strokeStyle = "#6b3e2e";
+    ctx.moveTo(x,y);
+
+    const x2 = x + length * Math.cos(angle);
+    const y2 = y + length * Math.sin(angle);
+
+    ctx.lineTo(x2,y2);
+    ctx.stroke();
+
+    const newLength = length * 0.75;
+    const newWidth = width * 0.7;
+
+    drawBranch(x2,y2,newLength,angle - 0.4,newWidth,depth-1);
+    drawBranch(x2,y2,newLength,angle + 0.4,newWidth,depth-1);
+
+    // corazones distribuidos en todas las ramas
+    if(depth < 4){
+        drawHeart(x2,y2,8 + Math.random()*6);
     }
-});
-
-function startTree(){
-    branches.push({
-        x:canvas.width/2,
-        y:canvas.height,
-        length:120,
-        angle:-90,
-        width:18
-    });
-    grow();
 }
 
-function grow(){
-    if(branches.length===0){
-        drawFlowers();
-        return;
-    }
-
-    let newBranches=[];
-
-    branches.forEach(branch=>{
-        const rad=branch.angle*Math.PI/180;
-        const x2=branch.x+branch.length*Math.cos(rad);
-        const y2=branch.y+branch.length*Math.sin(rad);
-
-        ctx.strokeStyle="#6b3e26";
-        ctx.lineWidth=branch.width;
-        ctx.lineCap="round";
-
-        ctx.beginPath();
-        ctx.moveTo(branch.x,branch.y);
-        ctx.lineTo(x2,y2);
-        ctx.stroke();
-
-        allPoints.push({x:x2,y:y2,width:branch.width});
-
-        if(branch.width>2){
-            const count=2+Math.floor(Math.random()*2);
-
-            for(let i=0;i<count;i++){
-                newBranches.push({
-                    x:x2,
-                    y:y2,
-                    length:branch.length*0.75,
-                    angle:branch.angle+(Math.random()*90-45),
-                    width:branch.width*0.7
-                });
-            }
-        }else{
-            endpoints.push({x:x2,y:y2});
-        }
-    });
-
-    branches=newBranches;
-    setTimeout(grow,140);
-}
-
+/* ❤️ Corazones pastel */
 function drawHeart(x,y,size){
-    ctx.fillStyle="#ff2e6e";
+    const colors = ["#f497b6","#e77fa3","#ff8fab","#f08080","#ffb3c6"];
+    ctx.fillStyle = colors[Math.floor(Math.random()*colors.length)];
+
     ctx.beginPath();
     ctx.moveTo(x,y);
-    ctx.bezierCurveTo(x-size,y-size,
-                      x-size*1.6,y+size/2,
-                      x,y+size);
-    ctx.bezierCurveTo(x+size*1.6,y+size/2,
-                      x+size,y-size,
-                      x,y);
+    ctx.bezierCurveTo(x,y-size/2,x-size/2,y-size/2,x-size/2,y);
+    ctx.bezierCurveTo(x-size/2,y+size/2,x,y+size/2,x,y+size);
+    ctx.bezierCurveTo(x,y+size/2,x+size/2,y+size/2,x+size/2,y);
+    ctx.bezierCurveTo(x+size/2,y-size/2,x,y-size/2,x,y);
     ctx.fill();
 }
 
-function drawFlowers(){
+drawBranch(canvas.width/2, canvas.height-20, 90, -Math.PI/2, 12, 8);
 
-    // flores en puntas
-    endpoints.forEach(point=>{
-        for(let i=0;i<4;i++){
-            drawHeart(
-                point.x+(Math.random()*12-6),
-                point.y+(Math.random()*12-6),
-                6
-            );
-        }
-    });
-
-    // flores en ramas medias (más frondoso)
-    allPoints.forEach(point=>{
-        if(point.width<8){ 
-            if(Math.random()>0.5){
-                drawHeart(
-                    point.x+(Math.random()*10-5),
-                    point.y+(Math.random()*10-5),
-                    5
-                );
-            }
-        }
-    });
-}
-
-// contador
-const startDate=new Date("2023-08-20");
+/* ⏳ Contador */
+const startDate = new Date("2023-08-20T00:00:00");
 
 function updateCounter(){
-    const now=new Date();
-    const diff=now-startDate;
-    const days=Math.floor(diff/(1000*60*60*24));
-    const years=Math.floor(days/365);
-    const months=Math.floor((days%365)/30);
-    const remainingDays=days%30;
+    const now = new Date();
 
-    document.getElementById("counter").innerText=
-    `Mi amor por ti comenzó el 20/08/2023 ❤️
-Han pasado ${years} años, ${months} meses y ${remainingDays} días juntos`;
+    let years = now.getFullYear() - startDate.getFullYear();
+    let months = now.getMonth() - startDate.getMonth();
+    let days = now.getDate() - startDate.getDate();
+
+    if(days < 0){
+        months--;
+        days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    }
+
+    if(months < 0){
+        years--;
+        months += 12;
+    }
+
+    document.getElementById("counter").innerHTML =
+        `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
+        Han pasado ${years} años, ${months} meses y ${days} días juntos`;
 }
+
 updateCounter();
-setInterval(updateCounter,86400000);
+setInterval(updateCounter, 86400000);
 </script>
 
 </body>
