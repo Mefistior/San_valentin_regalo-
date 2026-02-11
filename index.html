@@ -25,7 +25,6 @@ body{
     box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
-/* DIAGRAMA */
 .layout{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -40,7 +39,6 @@ body{
     box-shadow:0 8px 20px rgba(0,0,0,0.05);
 }
 
-/* TEXTO */
 .text{
     grid-column:1;
     grid-row:1;
@@ -49,15 +47,13 @@ body{
 h1{ color:#7a2e45; margin-bottom:10px; }
 p{ color:#5a2a3b; line-height:1.5; }
 
-/* ÁRBOL */
 .tree{
     grid-column:2;
     grid-row:1;
     display:flex;
     justify-content:center;
     align-items:center;
-    overflow:hidden; /* PARA QUE SE CORTE EN BORDES */
-    position:relative;
+    overflow:hidden;
 }
 
 canvas{
@@ -65,7 +61,6 @@ canvas{
     height:500px;
 }
 
-/* CONTADOR */
 .counter{
     grid-column:1 / span 2;
     grid-row:2;
@@ -74,7 +69,6 @@ canvas{
     color:#6b2e44;
 }
 
-/* BOTÓN */
 #musicBtn{
     position:fixed;
     bottom:20px;
@@ -124,10 +118,8 @@ const ctx = canvas.getContext("2d");
 canvas.width = canvas.offsetWidth;
 canvas.height = 500;
 
-/* ===== ÁRBOL ===== */
-
 let branches=[];
-let flowers=[];
+let flowerPoints=[];
 
 function grow(){
     branches.push({
@@ -135,16 +127,15 @@ function grow(){
         y:canvas.height-20,
         length:130,
         angle:-Math.PI/2,
-        width:22,          // TRONCO MÁS GRUESO
-        depth:7            // MENOS RAMAS LOCAS
+        width:22,
+        depth:7
     });
     animate();
 }
 
 function animate(){
-
     if(branches.length===0){
-        drawFlowers();
+        drawHearts();
         return;
     }
 
@@ -162,7 +153,7 @@ function animate(){
         ctx.lineTo(x2,y2);
         ctx.stroke();
 
-        flowers.push({x:x2,y:y2,depth:b.depth});
+        flowerPoints.push({x:x2,y:y2,depth:b.depth});
 
         if(b.depth>0){
             const nl=b.length*0.75;
@@ -174,36 +165,43 @@ function animate(){
     });
 
     branches=next;
-    setTimeout(animate,80);
+    setTimeout(animate,70);
 }
 
-/* FLORES */
-function flower(x,y,size,color){
+/* ❤️ CORAZONES */
+
+function heart(x,y,size,color){
     ctx.fillStyle=color;
     ctx.beginPath();
-    ctx.arc(x,y,size,0,Math.PI*2);
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x, y-size/2, x-size/2, y-size/2, x-size/2, y);
+    ctx.bezierCurveTo(x-size/2, y+size/2, x, y+size/2, x, y+size);
+    ctx.bezierCurveTo(x, y+size/2, x+size/2, y+size/2, x+size/2, y);
+    ctx.bezierCurveTo(x+size/2, y-size/2, x, y-size/2, x, y);
     ctx.fill();
 }
 
-function drawFlowers(){
-    const colors=["#ff8fab","#f497b6","#e77fa3","#ffc2d1"];
+function drawHearts(){
+    const colors=["#ff8fab","#f497b6","#e77fa3","#ffc2d1","#ff5c8a"];
 
-    flowers.forEach(p=>{
-        if(p.depth<=4 || Math.random()>0.4){
-            flower(
-                p.x+(Math.random()*15-7),
-                p.y+(Math.random()*15-7),
-                4+Math.random()*5,
-                colors[Math.floor(Math.random()*colors.length)]
-            );
+    flowerPoints.forEach(p=>{
+        // MUCHÍSIMA MÁS DENSIDAD
+        if(p.depth<=5 || Math.random()>0.2){
+            for(let i=0;i<3;i++){
+                heart(
+                    p.x+(Math.random()*20-10),
+                    p.y+(Math.random()*20-10),
+                    6+Math.random()*6,
+                    colors[Math.floor(Math.random()*colors.length)]
+                );
+            }
         }
     });
 }
 
 grow();
 
-/* ===== CONTADOR ===== */
-
+/* CONTADOR */
 const start=new Date("2023-08-20");
 
 function update(){
@@ -222,8 +220,7 @@ function update(){
 update();
 setInterval(update,86400000);
 
-/* ===== MÚSICA ===== */
-
+/* MÚSICA */
 const music=document.getElementById("bgMusic");
 const btn=document.getElementById("musicBtn");
 
