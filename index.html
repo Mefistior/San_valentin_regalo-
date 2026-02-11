@@ -3,39 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Regalo de San Valentín</title>
+<title>Para Laura ❤️</title>
 
 <style>
 body{
     margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #fbe4ec;
+    font-family:'Segoe UI',sans-serif;
+    background:#f6d6df;
     display:flex;
     justify-content:center;
     align-items:center;
     min-height:100vh;
 }
 
-.main-container{
+.container{
     width:95%;
-    max-width:1100px;
-    background:#f6c9da;
+    max-width:1200px;
+    background:#f2b8c6;
     border-radius:25px;
-    padding:30px;
+    padding:25px;
     box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
 .top-section{
     display:flex;
-    flex-wrap:wrap;
     gap:20px;
+    flex-wrap:wrap;
 }
 
 .card{
-    background:#f9dbe6;
+    background:#ffe6ed;
     border-radius:20px;
     padding:25px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.05);
+    box-shadow:0 8px 20px rgba(0,0,0,0.06);
 }
 
 .text-card{
@@ -51,32 +51,35 @@ body{
     align-items:center;
 }
 
-.counter-card{
+.bottom-section{
     margin-top:25px;
+}
+
+.counter-card{
     text-align:center;
     font-size:18px;
+    color:#6b2e44;
 }
 
 h1{
-    margin-top:0;
-    color:#8e3b5f;
+    color:#7a2e45;
 }
 
 p{
-    color:#6d3b52;
+    color:#5a2a3b;
     line-height:1.6;
 }
 
 canvas{
     width:100%;
-    height:400px;
+    height:420px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="main-container">
+<div class="container">
 
 <div class="top-section">
 
@@ -94,7 +97,9 @@ canvas{
 
 </div>
 
+<div class="bottom-section">
 <div class="card counter-card" id="counter"></div>
+</div>
 
 </div>
 
@@ -103,40 +108,78 @@ const canvas = document.getElementById("treeCanvas");
 const ctx = canvas.getContext("2d");
 
 canvas.width = canvas.offsetWidth;
-canvas.height = 400;
+canvas.height = 420;
 
-/* 🌳 Árbol Frondoso */
-function drawBranch(x,y,length,angle,width,depth){
-    if(depth===0) return;
+let branches = [];
+let heartPoints = [];
+let started = false;
 
-    ctx.beginPath();
-    ctx.lineWidth = width;
-    ctx.strokeStyle = "#6b3e2e";
-    ctx.moveTo(x,y);
-
-    const x2 = x + length * Math.cos(angle);
-    const y2 = y + length * Math.sin(angle);
-
-    ctx.lineTo(x2,y2);
-    ctx.stroke();
-
-    const newLength = length * 0.75;
-    const newWidth = width * 0.7;
-
-    drawBranch(x2,y2,newLength,angle - 0.4,newWidth,depth-1);
-    drawBranch(x2,y2,newLength,angle + 0.4,newWidth,depth-1);
-
-    // corazones distribuidos en todas las ramas
-    if(depth < 4){
-        drawHeart(x2,y2,8 + Math.random()*6);
-    }
+function startTree(){
+    branches.push({
+        x: canvas.width/2,
+        y: canvas.height - 10,
+        length: 100,
+        angle: -Math.PI/2,
+        width: 12,
+        depth: 8
+    });
+    animate();
 }
 
-/* ❤️ Corazones pastel */
-function drawHeart(x,y,size){
-    const colors = ["#f497b6","#e77fa3","#ff8fab","#f08080","#ffb3c6"];
-    ctx.fillStyle = colors[Math.floor(Math.random()*colors.length)];
+function animate(){
+    if(branches.length === 0){
+        drawHearts();
+        return;
+    }
 
+    let newBranches = [];
+
+    branches.forEach(b => {
+
+        const x2 = b.x + b.length * Math.cos(b.angle);
+        const y2 = b.y + b.length * Math.sin(b.angle);
+
+        ctx.beginPath();
+        ctx.strokeStyle = "#7b4b2a";
+        ctx.lineWidth = b.width;
+        ctx.lineCap = "round";
+        ctx.moveTo(b.x, b.y);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        heartPoints.push({x:x2, y:y2, depth:b.depth});
+
+        if(b.depth > 0){
+            const newLength = b.length * 0.75;
+            const newWidth = b.width * 0.7;
+
+            newBranches.push({
+                x:x2,
+                y:y2,
+                length:newLength,
+                angle:b.angle - 0.5,
+                width:newWidth,
+                depth:b.depth - 1
+            });
+
+            newBranches.push({
+                x:x2,
+                y:y2,
+                length:newLength,
+                angle:b.angle + 0.5,
+                width:newWidth,
+                depth:b.depth - 1
+            });
+        }
+
+    });
+
+    branches = newBranches;
+    setTimeout(animate, 120);
+}
+
+function drawHeart(x,y,size,color){
+    ctx.fillStyle = color;
     ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.bezierCurveTo(x,y-size/2,x-size/2,y-size/2,x-size/2,y);
@@ -146,9 +189,24 @@ function drawHeart(x,y,size){
     ctx.fill();
 }
 
-drawBranch(canvas.width/2, canvas.height-20, 90, -Math.PI/2, 12, 8);
+function drawHearts(){
+    const colors = ["#f497b6","#e77fa3","#ff8fab","#f6a5b6","#ffc2d1"];
 
-/* ⏳ Contador */
+    heartPoints.forEach(p=>{
+        if(p.depth <= 4 || Math.random() > 0.6){
+            const size = 6 + Math.random()*6;
+            const offsetX = (Math.random()*14 - 7);
+            const offsetY = (Math.random()*14 - 7);
+            drawHeart(p.x+offsetX, p.y+offsetY, size,
+                colors[Math.floor(Math.random()*colors.length)]
+            );
+        }
+    });
+}
+
+startTree();
+
+/* CONTADOR */
 const startDate = new Date("2023-08-20T00:00:00");
 
 function updateCounter(){
@@ -169,8 +227,8 @@ function updateCounter(){
     }
 
     document.getElementById("counter").innerHTML =
-        `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
-        Han pasado ${years} años, ${months} meses y ${days} días juntos`;
+    `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
+    Han pasado ${years} años, ${months} meses y ${days} días juntos`;
 }
 
 updateCounter();
