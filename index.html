@@ -6,108 +6,97 @@
 <title>Para Laura ❤️</title>
 
 <style>
-
 body{
     margin:0;
-    font-family:'Segoe UI',sans-serif;
-    background:linear-gradient(180deg,#f8d7e3,#f3c1d6);
+    font-family: 'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#f6cdd8,#f2b8c9);
     display:flex;
     justify-content:center;
-    padding:40px 20px;
+    align-items:center;
+    min-height:100vh;
 }
 
 /* CONTENEDOR GENERAL */
 .container{
-    max-width:1100px;
-    width:100%;
+    width:95%;
+    max-width:900px;
 }
 
 /* TARJETA PRINCIPAL */
 .card{
-    background:#fbe4ee;
-    border-radius:30px;
-    padding:40px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.08);
+    background:#f9e4ec;
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
-/* FILA SUPERIOR */
+/* ZONA SUPERIOR */
 .top{
     display:flex;
-    gap:50px;
-}
-
-/* ZONAS INTERNAS */
-.section{
-    background:#fff0f6;
-    border-radius:25px;
-    padding:35px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:25px;
 }
 
 /* LETRAS */
 .texto{
-    flex:1;
-    font-size:22px;
-    line-height:1.7;
-    color:#6b2c46;
+    width:50%;
+    background:#ffffffcc;
+    padding:20px;
+    border-radius:20px;
 }
 
 .texto h1{
-    font-size:38px;
-    margin-bottom:25px;
+    color:#7a2c45;
+    margin-top:0;
+}
+
+.texto p{
+    color:#6b2d44;
+    line-height:1.6;
 }
 
 /* ÁRBOL */
-.arbol-area{
-    flex:1;
+.arbol{
+    width:50%;
+    background:#ffffffcc;
+    border-radius:20px;
     display:flex;
     justify-content:center;
     align-items:center;
     cursor:pointer;
+    overflow:hidden;
 }
 
 svg{
     width:100%;
-    max-width:480px;
-    transition:1s ease;
-}
-
-.tronco{
-    stroke:#6b3e26;
-    stroke-width:20;
-    fill:none;
-    stroke-linecap:round;
-}
-
-.rama{
-    stroke:#6b3e26;
-    stroke-width:14;
-    fill:none;
-    stroke-linecap:round;
-}
-
-.corazon{
-    font-size:24px;
-    opacity:0;
-    transition:1.5s ease;
-}
-
-.crecer{
-    transform:scale(1.1);
-}
-
-.mostrar{
-    opacity:1;
+    height:420px;
 }
 
 /* CONTADOR */
 .contador{
-    margin-top:50px;
+    margin-top:20px;
+    background:#ffffffcc;
+    padding:15px;
+    border-radius:20px;
     text-align:center;
-    font-size:22px;
-    color:#6b2c46;
+    color:#7a2c45;
 }
 
+/* BOTÓN MÚSICA */
+.music{
+    margin-top:10px;
+    text-align:center;
+}
+
+button{
+    background:#d86c8b;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:20px;
+    cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -117,81 +106,82 @@ svg{
 
 <div class="top">
 
-<!-- LETRAS -->
-<div class="section texto">
+<div class="texto">
 <h1>Para Laura ❤️</h1>
-
 <p>Eres la persona que llena mi mundo.</p>
 <p>Eres mi felicidad y mi paz.</p>
 <p>Eres el amor que encontré sin buscar.</p>
 <p>Y cada día contigo es un regalo maravilloso.</p>
 </div>
 
-<!-- ÁRBOL -->
-<div class="section arbol-area" onclick="activarArbol()">
-
-<svg id="arbol" viewBox="0 0 400 500">
+<div class="arbol" onclick="iniciar()">
+<svg viewBox="0 0 400 500" id="treeSVG">
 
 <!-- TRONCO -->
-<line class="tronco" x1="200" y1="470" x2="200" y2="320"/>
+<line x1="200" y1="500" x2="200" y2="350" stroke="#6b3e26" stroke-width="14"/>
 
-<!-- RAMAS PRINCIPALES -->
-<line class="rama" x1="200" y1="340" x2="130" y2="250"/>
-<line class="rama" x1="200" y1="340" x2="270" y2="250"/>
+<!-- RAMAS -->
+<line x1="200" y1="380" x2="120" y2="300" stroke="#6b3e26" stroke-width="8"/>
+<line x1="200" y1="380" x2="280" y2="300" stroke="#6b3e26" stroke-width="8"/>
+<line x1="200" y1="330" x2="150" y2="250" stroke="#6b3e26" stroke-width="7"/>
+<line x1="200" y1="330" x2="250" y2="250" stroke="#6b3e26" stroke-width="7"/>
+<line x1="200" y1="300" x2="200" y2="220" stroke="#6b3e26" stroke-width="7"/>
 
-<line class="rama" x1="200" y1="300" x2="90" y2="210"/>
-<line class="rama" x1="200" y1="300" x2="310" y2="210"/>
-
-<line class="rama" x1="200" y1="270" x2="120" y2="170"/>
-<line class="rama" x1="200" y1="270" x2="280" y2="170"/>
-
-<!-- CORAZONES COPA (FRONDOSO) -->
-<text class="corazon" x="200" y="150">❤️</text>
-<text class="corazon" x="160" y="160">💗</text>
-<text class="corazon" x="240" y="160">💖</text>
-<text class="corazon" x="120" y="180">💕</text>
-<text class="corazon" x="280" y="180">💘</text>
-<text class="corazon" x="90" y="210">💞</text>
-<text class="corazon" x="310" y="210">💓</text>
-<text class="corazon" x="150" y="210">💝</text>
-<text class="corazon" x="250" y="210">❤️</text>
-<text class="corazon" x="200" y="200">💗</text>
+<!-- CORAZONES -->
+<g id="hearts"></g>
 
 </svg>
-
-</div>
-</div>
-
-<!-- CONTADOR -->
-<div class="section contador">
-Mi amor por ti comenzó el 20/08/2023 ❤️<br><br>
-Han pasado <span id="tiempo"></span>
 </div>
 
 </div>
+
+<div class="contador" id="contador"></div>
+
+<div class="music">
+<button onclick="playMusic()">🎵 Nuestra canción</button>
+<audio id="audio" src="canción.mp3.mp3"></audio>
 </div>
 
-<!-- AUDIO -->
-<audio id="musica" src="cancion.mp3"></audio>
+</div>
+</div>
 
 <script>
 
-function activarArbol(){
-    const arbol = document.getElementById("arbol");
-    arbol.classList.add("crecer");
+let iniciado=false;
 
-    document.querySelectorAll(".corazon").forEach(c=>{
-        c.classList.add("mostrar");
-    });
+function iniciar(){
+    if(iniciado) return;
+    iniciado=true;
 
-    const audio = document.getElementById("musica");
-    audio.currentTime = 0;
-    audio.play();
+    const hearts = document.getElementById("hearts");
+
+    const colores = ["#ff6b9a","#ff8fab","#ff4d6d","#ff99ac","#ff85a2"];
+
+    for(let i=0;i<40;i++){
+        let x = 80 + Math.random()*240;
+        let y = 80 + Math.random()*250;
+
+        let heart = document.createElementNS("http://www.w3.org/2000/svg","text");
+        heart.setAttribute("x",x);
+        heart.setAttribute("y",y);
+        heart.setAttribute("font-size","20");
+        heart.setAttribute("fill",colores[Math.floor(Math.random()*colores.length)]);
+        heart.textContent="❤";
+
+        heart.style.opacity="0";
+        hearts.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.style.transition="opacity 1s";
+            heart.style.opacity="1";
+        }, i*80);
+    }
 }
 
-/* CONTADOR EXACTO */
+/* CONTADOR COMPLETO */
+const inicio = new Date("2023-08-20");
+
 function actualizar(){
-    const inicio = new Date("2023-08-20T00:00:00");
     const ahora = new Date();
 
     let años = ahora.getFullYear() - inicio.getFullYear();
@@ -200,7 +190,7 @@ function actualizar(){
 
     if(dias < 0){
         meses--;
-        dias += new Date(ahora.getFullYear(), ahora.getMonth(), 0).getDate();
+        dias += 30;
     }
 
     if(meses < 0){
@@ -208,13 +198,18 @@ function actualizar(){
         meses += 12;
     }
 
-    document.getElementById("tiempo").innerText =
-        años+" años, "+meses+" meses y "+dias+" días juntos";
+    document.getElementById("contador").innerHTML =
+    `Mi amor por ti comenzó el 20/08/2023 ❤️<br>
+     Han pasado ${años} años, ${meses} meses y ${dias} días juntos`;
 }
 
-actualizar();
 setInterval(actualizar,1000);
+actualizar();
 
+/* MÚSICA */
+function playMusic(){
+    document.getElementById("audio").play();
+}
 </script>
 
 </body>
